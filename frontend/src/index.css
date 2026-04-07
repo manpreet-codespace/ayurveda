@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root{
+    /* Ayurveda Yogashram-inspired palette */
+    --forest-green: #2f5d3a;
+    --olive-green: #6f8a3a;
+    --sage-green: #a9ba7a;
+    --leaf-green: #86a94b;
+    --gold: #c49a3a;
+    --sand: #efe3c2;
+    --cream: #f8f2e3;
+    --earth: #8b6b3f;
+    --brown: #723421;
+    --charcoal: #2b2b2b;
+    --white: #ffffff;
+
+    /* semantic aliases */
+    --primary: #2f5d3a;
+    --primary-dark: #23482d;
+    --secondary: #6f8a3a;
+    --accent: #c49a3a;
+    --accent-soft: #efe3c2;
+    --background: #f8f2e3;
+    --surface: #ffffff;
+    --text-primary: #2b2b2b;
+    --text-secondary: #5b4328;
+    --border: #d8ccac;
+/* 
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px; */
+}
+
+
+.font-body{
+  font-family:"Liberation Mono","Courier New",monospace;
+}
+
+.font-heading{
+  font-family:"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" ;
+}
