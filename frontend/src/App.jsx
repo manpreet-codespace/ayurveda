@@ -3,6 +3,30 @@ import Navbar from "./Components/Layouts/Navbar"
 import OPD_timings from "./Components/UI/OPD_timings"
 import { problems_config } from "./config/problems_config"
 import Problems from "./Components/UI/Problems"
+import {Swiper,SwiperSlide} from 'swiper/react';
+import {Navigation, Pagination, Autoplay} from 'swiper/modules';
+
+
+import 'swiper/css'
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+import award1 from './assets/award-image-1.webp';
+import award2 from './assets/award-image-2.webp';
+import award3 from './assets/award-image-3.webp';
+import award4 from './assets/award-image-4.webp';
+import award5 from './assets/award-image-5.jpg';
+import disease from './assets/diseases_home.webp';
+import ayurveda from './assets/ayurveda_home.webp';
+
+
+import {motion} from 'framer-motion';
+import Product from "./Components/UI/Product"
+import product1 from './assets/product1.webp';
+import product2 from './assets/product2.webp';
+import product3 from './assets/product3.webp';
+
+
 
 function App() {
 
@@ -12,6 +36,22 @@ function App() {
     {name:"Mohali OPD dates will be 9 & 27 April 2026"},
     {name:"Gurgaon OPD dates will be  4, 6 & 8 April 2026"}
   ]
+
+  const award_images=[
+    {img:award1},
+    {img:award2},
+    {img:award3},
+    {img:award4},
+    {img:award5},
+  ]
+
+  const products= [
+    {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'}
+  
+  ]
+
   return (
     <>
       <Navbar/>
@@ -41,9 +81,106 @@ function App() {
         </section>
         
 
-        <section>
+        <section className="py-10">
           <h1 className="text-[var(--brown)] text-[36px] font-bold text-center ">Giving your health a new <span className="text-[var(--primary-dark)]">lift</span></h1>
-        </section>
+
+          <div>
+            <Swiper
+              modules={[Navigation,Pagination,Autoplay]}
+              navigation
+              pagination={{clickable:true}}
+              autoplay={{delay:2000}}
+              slidesPerView={1}
+              spaceBetween={20}
+            >
+              {
+                award_images.map((award,index)=>(
+                    <div key={index}>
+                      <SwiperSlide><img src={award.img}/></SwiperSlide>
+                    </div>
+                ))
+              }
+            </Swiper>
+              </div>
+            </section>
+
+            <section className="p-16 flex justify-evenly">
+              <motion.div
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className=" flex flex-col"
+              >
+                <div className="overflow-hidden border h-140">
+                  <img
+                    src={disease}
+                    alt="healing diseases remedies"
+                    className="object-cover transition-transform duration-300 ease-out hover:scale-110"
+                  />
+                </div>
+
+                <div className="space-y-4 mt-6 ">
+                  <p className="text-[var(--brown)] text-[20px]">
+                    AYURVEDA YOGASHRAM REMEDIES PRIVATE LIMITED
+                  </p>
+                  <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+                    Diseases we Heal
+                  </h1>
+                  <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
+                    Discover More
+                  </button>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 80 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className=" flex flex-col"
+              >
+                <div className="overflow-hidden border h-140 flex order-2">
+                  <img
+                    src={ayurveda}
+                    alt="healing diseases remedies"
+                    className=" object-cover transition-transform duration-300 ease-out hover:scale-110"
+                  />
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <p className="text-[var(--brown)] text-[20px]">
+                    PURIFYING BODY, MIND & SOUL   
+                  </p>
+                  <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+                    Why Ayurveda?
+                  </h1>
+                  <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
+                    Discover More
+                  </button>
+                </div>
+              </motion.div>
+            </section>
+              
+            <motion.section
+            initial={{opacitty:0, y:80}}
+            whileInView={{opacity:1, y:0}}
+            transition= {{duration:0.6}}
+            viewport={{once:true}}
+            >
+
+                <h1 className="text-[42px] font-semibold text-center ">
+                  Our Range of Products
+                </h1>
+
+                <div className="flex gap-6 p-16">
+                  
+                </div>
+
+            </motion.section>
+
+
+
     </>
   )
 }
