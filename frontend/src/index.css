@@ -4,7 +4,7 @@
     /* Ayurveda Yogashram-inspired palette */
     --forest-green: #007f5f;
     --olive-green: #6f8a3a;
-    --sage-green: #a9ba7a;
+    --pink: #faf0d7;
     --leaf-green: #86a94b;
     --gold: #c49a3a;
     --sand: #efe3c2;
@@ -16,7 +16,7 @@
 
     /* semantic aliases */
     --primary: #2f5d3a;
-    --primary-dark: #23482d;
+    --primary-dark:#9ccaad;
     --secondary: #6f8a3a;
     --accent: #c49a3a;
     --accent-soft: #efe3c2;
