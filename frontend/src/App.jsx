@@ -30,7 +30,6 @@ import product3 from './assets/product3.webp';
 
 function App() {
 
-
   const opd_timings = [
     {name:"Amritsar OPD Dates will be  11 & 29 April 2026"},
     {name:"Mohali OPD dates will be 9 & 27 April 2026"},
@@ -48,7 +47,10 @@ function App() {
   const products= [
     {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
     {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
-    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'}
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
   
   ]
 
