@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import Navbar from "./Components/Layouts/Navbar"
 import OPD_timings from "./Components/UI/OPD_timings"
 import { problems_config } from "./config/problems_config"
@@ -27,9 +27,6 @@ import product2 from './assets/product2.webp';
 import product3 from './assets/product3.webp';
 
 
-
-function App() {
-
   const opd_timings = [
     {name:"Amritsar OPD Dates will be  11 & 29 April 2026"},
     {name:"Mohali OPD dates will be 9 & 27 April 2026"},
@@ -46,13 +43,32 @@ function App() {
 
   const products= [
     {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
+    {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
+    {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
+    {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
+    {img: product1, name:"Cancer Gajkesri Vati", price:2950, categories:'New Arrivals'},
     {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product2, name:"Rental Care Kit", price:10290, categories:'Combos/Kits'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
+    {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
     {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
     {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
     {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
     {img: product3, name:"Fibro Heal", price:1490, categories:'Best Sellers'},
   
   ]
+
+function App() {
+
+    const [selected,setSelected]=useState("all");
+
+    const filtered= selected==="all"
+    ?products
+    :products.filter((p)=>p.categories === selected)
 
   return (
     <>
@@ -70,7 +86,7 @@ function App() {
         </div>
         </section>
 
-        <section className="bg-[var(--pink)] py-12" >
+        <section className="bg-(--pink) py-12" >
           <div className="flex flex-wrap gap-6 w-10/12 mx-auto ">
             {
               problems_config.map((problem,index)=>(
@@ -84,7 +100,7 @@ function App() {
         
 
         <section className="py-10">
-          <h1 className="text-[var(--brown)] text-[36px] font-bold text-center ">Giving your health a new <span className="text-[var(--primary-dark)]">lift</span></h1>
+          <h1 className="text-(--brown) text-[36px] font-bold text-center ">Giving your health a new <span className="text-(--primary-dark)">lift</span></h1>
 
           <div>
             <Swiper
@@ -114,7 +130,7 @@ function App() {
                 viewport={{ once: true }}
                 className=" flex flex-col"
               >
-                <div className="overflow-hidden border h-140">
+                <div className="overflow-hidden h-140">
                   <img
                     src={disease}
                     alt="healing diseases remedies"
@@ -123,10 +139,10 @@ function App() {
                 </div>
 
                 <div className="space-y-4 mt-6 ">
-                  <p className="text-[var(--brown)] text-[20px]">
+                  <p className="text-(--brown) text-[20px]">
                     AYURVEDA YOGASHRAM REMEDIES PRIVATE LIMITED
                   </p>
-                  <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+                  <h1 className="text-[42px] font-semibold text-(--text-primary)">
                     Diseases we Heal
                   </h1>
                   <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
@@ -142,7 +158,7 @@ function App() {
                 viewport={{ once: true }}
                 className=" flex flex-col"
               >
-                <div className="overflow-hidden border h-140 flex order-2">
+                <div className="overflow-hidden h-140 flex order-2">
                   <img
                     src={ayurveda}
                     alt="healing diseases remedies"
@@ -151,10 +167,10 @@ function App() {
                 </div>
 
                 <div className="space-y-4 mb-8">
-                  <p className="text-[var(--brown)] text-[20px]">
+                  <p className="text-(--brown) text-[20px]">
                     PURIFYING BODY, MIND & SOUL   
                   </p>
-                  <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+                  <h1 className="text-[42px] font-semibold text-(--text-primary)">
                     Why Ayurveda?
                   </h1>
                   <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
@@ -165,7 +181,7 @@ function App() {
             </section>
               
             <motion.section
-            initial={{opacitty:0, y:80}}
+            initial={{opacity:0, y:80}}
             whileInView={{opacity:1, y:0}}
             transition= {{duration:0.6}}
             viewport={{once:true}}
@@ -174,9 +190,24 @@ function App() {
                 <h1 className="text-[42px] font-semibold text-center ">
                   Our Range of Products
                 </h1>
+                <div className="flex justify-center ">
+                  {['Best Sellers', 'Combos/Kits', 'New Arrivals'].map((f)=>(
+                    <button
+                    onClick={()=>setSelected(f)}
+                    className={`flex px-6 py-2 ${selected === f ? 'active:text-red-800 active:underline ':'hover:underline hover:text-red-800'}`}>
+                      {f}
+                    </button>
+                  ))}
+                  </div>
 
-                <div className="flex gap-6 p-16">
-                  
+                <div className="flex w-11/12 max-w-6xl mx-auto gap-6 py-10 px-6 border-2 overflow-x-auto overflow-y-hidden flex-nowrap justify-start">
+                  {
+                    filtered.map((product,index)=>(
+                      <div key={index} className="border shrink-0">
+                        <Product name={product.name} img={product.img} price={product.price}/>
+                      </div>
+                    ))
+                  }
                 </div>
 
             </motion.section>
