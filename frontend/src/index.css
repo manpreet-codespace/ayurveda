@@ -13,6 +13,8 @@
     --brown: #723421;
     --charcoal: #2b2b2b;
     --white: #ffffff;
+    --sky:#cae0d2;
+    
 
     /* semantic aliases */
     --primary: #2f5d3a;
@@ -25,6 +27,10 @@
     --text-primary: #2b2b2b;
     --text-secondary: #5b4328;
     --border: #d8ccac;
+    --footer-bg: #0b8a69;
+    --footer-bottom: #000000;
+    --footer-contact: #9c5534;
+    --footer-divider: rgba(255, 255, 255, 0.15);
 /* 
     --breakpoint-xs: 0;
     --breakpoint-sm: 576px;
