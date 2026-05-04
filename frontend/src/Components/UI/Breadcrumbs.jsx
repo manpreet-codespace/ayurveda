@@ -4,12 +4,15 @@ import { Link, useLocation } from 'react-router-dom';
 const Breadcrumbs = () => {
   const location = useLocation();
   const pathNames = location.pathname.split("/").filter((x) => x);
-
+  const heading= pathNames.length > 0
+    ? pathNames[pathNames.length - 1].charAt(0).toUpperCase() +
+      pathNames[pathNames.length - 1].slice(1).replace(/-/g, " ")
+    : "Home";
   return (
     <>
     <div className='text-black h-40 w-full bg-(--pink) px-20 flex flex-col justify-center'>
     <h1 className='text-[52px]'>
-      {pathNames}
+      {heading}
     </h1>
       <nav className='mt-2'>
       
