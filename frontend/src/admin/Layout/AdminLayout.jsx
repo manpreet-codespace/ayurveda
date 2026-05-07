@@ -7,11 +7,11 @@ const AdminLayout = () => {
   return (
 
     <>
-        <div className='flex'>
+        <div className='flex bg-(--cream) h-screen'>
                 <Sidebar/>
             <div className='ml-64 flex-1'>
                 <Navbar/>
-                    <div className='mt-16'>
+                    <div className='pt-20 overflow-scroll no-scrollbar h-screen'>
                         <Outlet/>
                     </div>
             </div>

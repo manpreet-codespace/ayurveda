@@ -8,7 +8,7 @@
     --leaf-green: #86a94b;
     --gold: #c49a3a;
     --sand: #efe3c2;
-    --cream: #f8f2e3;
+    --cream: #fbf5e8;
     --earth: #8b6b3f;
     --brown: #723421;
     --charcoal: #2b2b2b;
@@ -48,4 +48,13 @@
 
 .font-heading{
   font-family:"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" ;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
