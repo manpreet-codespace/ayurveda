@@ -170,7 +170,7 @@ function App() {
         </div>
       </section>
 
-      <section className="bg-[var(--pink)] py-12" >
+      <section className="bg-(--pink) py-12" >
         <div className="flex flex-wrap gap-6 w-10/12 mx-auto ">
           {
             problems_config.map((problem, index) => (
@@ -184,7 +184,7 @@ function App() {
 
 
       <section className="py-10">
-        <h1 className="text-[var(--brown)] text-[36px] font-bold text-center ">Giving your health a new <span className="text-[var(--primary-dark)]">lift</span></h1>
+        <h1 className="text-(--brown) text-[36px] font-bold text-center ">Giving your health a new <span className="text-(--primary-dark)">lift</span></h1>
 
         <div>
           <Swiper
@@ -223,10 +223,10 @@ function App() {
           </div>
 
           <div className="space-y-4 mt-6 ">
-            <p className="text-[var(--brown)] text-[20px]">
+            <p className="text-(--brown) text-[20px]">
               AYURVEDA YOGASHRAM REMEDIES PRIVATE LIMITED
             </p>
-            <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+            <h1 className="text-[42px] font-semibold text-(--text-primary)">
               Diseases we Heal
             </h1>
             <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
@@ -251,10 +251,10 @@ function App() {
           </div>
 
           <div className="space-y-4 mb-8">
-            <p className="text-[var(--brown)] text-[20px]">
+            <p className="text-(--brown) text-[20px]">
               PURIFYING BODY, MIND & SOUL
             </p>
-            <h1 className="text-[42px] font-semibold text-[var(--text-primary)]">
+            <h1 className="text-[42px] font-semibold text-(--text-primary)">
               Why Ayurveda?
             </h1>
             <button className="border-2 px-10 py-2 transition-colors duration-300 hover:bg-black hover:text-white">
@@ -317,7 +317,7 @@ function App() {
           {problems.map((problem, index) => (
             <div
               key={index}
-              className={`group relative flex  justify-center overflow-hidden bg-[var(--surface)] ${problem.className}`}
+              className={`group relative flex  justify-center overflow-hidden bg-(--surface) ${problem.className}`}
             >
               <img
                 src={problem.img}
@@ -339,14 +339,14 @@ function App() {
       viewport={{once:true}}
       className="bg-[#dceadd] py-16"
       >
-        <h1 className="mx-auto max-w-4xl px-6 text-center text-5xl font-bold leading-[70px] text-[var(--text-primary)]">
+        <h1 className="mx-auto max-w-4xl px-6 text-center text-5xl font-bold leading-17.5 text-(--text-primary)">
           Trusted by Thousands of Customers across 1500+ Cities Worldwide.
         </h1>
-        <div className="mx-auto mt-10 flex max-w-[1280px] gap-4 overflow-x-auto px-6 pb-2">
+        <div className="mx-auto mt-10 flex max-w-7xl gap-4 overflow-x-auto px-6 pb-2">
           {testimonials.map((item, index) => (
             <div
               key={index}
-              className="relative h-[320px] min-w-[180px] overflow-hidden rounded-[10px] bg-black shadow-md"
+              className="relative h-80 min-w-45 overflow-hidden rounded-[10px] bg-black shadow-md"
             >
               <img
                 src={item.img}
@@ -394,11 +394,11 @@ function App() {
                     index !== serviceHighlights.length - 1 ? 'lg:border-r lg:border-[#e7e7e7]' : ''
                   }`}
                 >
-                  <div className="[perspective:1000px]">
-                    <Icon className="h-12 w-12 text-[#2f2f2f] transition-transform duration-500 ease-out group-hover:[transform:rotateY(180deg)]" strokeWidth={1.5} />
+                  <div className="perspective-[1000px]">
+                    <Icon className="h-12 w-12 text-[#2f2f2f] transition-transform duration-500 ease-out group-hover:transform-[rotateY(180deg)]" strokeWidth={1.5} />
                   </div>
                   <h3 className="mt-7 text-[20px] font-medium text-[#1f1f1f]">{item.title}</h3>
-                  <p className="mt-3 max-w-[220px] text-[15px] leading-7 text-[#404040]">
+                  <p className="mt-3 max-w-55 text-[15px] leading-7 text-[#404040]">
                     {item.description}
                   </p>
                 </div>
