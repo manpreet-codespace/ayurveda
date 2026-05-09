@@ -51,10 +51,11 @@ const Product = ({name,img,price}) => {
       </div>
 
       <div className='mt-4 space-y-1'>
-        <h2 className='text-[18px] font-medium text-[var(--text-primary)]'>{name}</h2>
+        <h2 className='text-[18px] font-medium text-(--text-primary)'>{name}</h2>
         <p className='text-[16px] text-black/70'>Rs. {price}</p>
       </div>
     </div>
+    
   )
 }
 

@@ -1,16 +1,52 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { connectDB } from "./db/pg_db.js";
+import diseaseRouter from "./Disease/disease.routes.js";
+import bodyParser from "body-parser";
+import "./Category/category.model.js";
+import "./Disease/disease.model.js";
 
-dotenv.config();
+dotenv.config({ path: new URL("./.env", import.meta.url).pathname });
 
-const app =express();
-app.use(cors)
-app.use(express.json);
+const app = express();
+const port = Number(String(process.env.PORT || "5000").trim());
+
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+app.use(express.json());
 
 
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server is listening on ${process.env.PORT}`);
+app.use(express.urlencoded({ extended: true }));
 
-})
+app.use("/api",diseaseRouter);
+
+app.listen(port, async () => {
+  console.log(`Server is listening on ${port}`);
+
+  try {
+    await connectDB();
+  } catch (err) {
+    console.error("Server started, but database connection failed:", err.message);
+  }
+});

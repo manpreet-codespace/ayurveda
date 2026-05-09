@@ -14,7 +14,7 @@ const MapComponents = () => {
         center= {position}
         zoom={13}
         scrollWheelZoom={true}
-        className="h-[500px] "
+        className="h-125 "
         >
             
             <TileLayer
