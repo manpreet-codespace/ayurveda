@@ -4,6 +4,7 @@ import JoinHands from './JoinHands.jsx'
 import Contact from './Contact.jsx'
 import Ayurveda from './Ayurveda.jsx'
 import adminRoutes from './admin/Routes/AdminRoutes.jsx'
+import Disease from './Disease.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
@@ -11,6 +12,7 @@ const AppRoutes = () => {
     { path: '/join-hands', element: <JoinHands /> },
     { path: '/contact', element: <Contact /> },
     { path: '/ayurveda', element: <Ayurveda /> },
+    {path: '/diseases', element:<Disease/>},
     adminRoutes,
   ])
 }

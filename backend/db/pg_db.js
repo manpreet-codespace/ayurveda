@@ -2,8 +2,11 @@
 import sq from "sequelize";
 
 import dotenv from "dotenv";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config({ path: new URL("../.env", import.meta.url).pathname });
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, "../.env") });
 
 const { Sequelize } = sq;
 
@@ -35,14 +38,21 @@ const { Sequelize } = sq;
 //   }
 // }
 
+// const requiredEnv = ["DB_NAME", "DB_USER", "DB_PASSWORD", "DB_HOST", "DB_PORT"];
+// const missingEnv = requiredEnv.filter((key) => !process.env[key]);
+
+// if (missingEnv.length > 0) {
+//   throw new Error(`Missing required database environment variables: ${missingEnv.join(", ")}`);
+// }
+
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  String(process.env.DB_NAME).trim(),
+  String(process.env.DB_USER).trim(),
+  String(process.env.DB_PASSWORD),
   {
-    host: process.env.DB_HOST,
+    host: String(process.env.DB_HOST).trim(),
     dialect: "postgres",
-    port: Number(process.env.DB_PORT),
+    port: Number(String(process.env.DB_PORT).trim()),
   }
 );
 

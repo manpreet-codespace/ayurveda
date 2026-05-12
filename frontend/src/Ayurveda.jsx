@@ -4,14 +4,13 @@ import Footer from "./Components/Layouts/Footer";
 import Breadcrumbs from "./Components/UI/Breadcrumbs";
 import { Link } from "react-router";
 import axios from "axios";
-
-
-const API_BASE_URL = "http://localhost:5001/api";
+import { API_BASE_URL } from "./config/api";
 
 const Ayurveda = () => {
   const [categories, setCategories] = useState([]);
   const [disease, setDisease] = useState([]);
 
+  
   useEffect(() => {
     const fetchDisease = async () => {
       try {

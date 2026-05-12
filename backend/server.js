@@ -1,13 +1,16 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
 import { connectDB } from "./db/pg_db.js";
 import diseaseRouter from "./Disease/disease.routes.js";
 import bodyParser from "body-parser";
 import "./Category/category.model.js";
 import "./Disease/disease.model.js";
 
-dotenv.config({ path: new URL("./.env", import.meta.url).pathname });
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(__dirname, ".env") });
 
 const app = express();
 const port = Number(String(process.env.PORT || "5000").trim());

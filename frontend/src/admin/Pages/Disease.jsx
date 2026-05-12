@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditButton from "../Components/EditButton";
 import DeleteButton from "../Components/DeleteButton";
 import axios from 'axios';
-
-const API_BASE_URL = "http://localhost:5001/api";
+import { API_BASE_URL } from "../../config/api";
 
 const Disease = () => {
   const [categories, setCategories] = useState([]);
@@ -11,6 +10,9 @@ const Disease = () => {
   const [diseaseInput, setDiseaseInput] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [disease, setDisease] = useState([]);
+  const [editId, setEditId] = useState(null);
+
+
 
   useEffect(() => {
     const fetchDiseaseData = async () => {
@@ -25,6 +27,7 @@ const Disease = () => {
         const savedDiseases = response.data.diseases.map((item) => ({
           id: item.d_id,
           name: item.disease_name,
+          categoryId: item.c_id,
           category: item.Category?.category_name || "",
         }));
 
@@ -38,12 +41,37 @@ const Disease = () => {
     fetchDiseaseData();
   }, []);
 
+
+  const handleDeleteDisease= async(d_id) =>{
+      try{
+        const response = await axios.delete(`${API_BASE_URL}/delete-disease/${d_id}`);
+
+        setDisease((prev)=>
+          prev.filter((item)=>item.id != d_id)
+      )
+      }
+      catch(err)
+      {
+        console.error(err.response?.data || err.message);
+
+      }
+  }
+
   const handleAddCategory = async() => {
     if (!categoryInput.trim()) return;
 
+    const categoryExists = categories.some((category) => (
+      category.name.toLowerCase() === categoryInput.trim().toLowerCase()
+    ));
+
+    if (categoryExists) {
+      console.error("Category already exists");
+      return;
+    }
+
     try{
       const response = await axios.post(`${API_BASE_URL}/save-disease-category`, {
-        category_name: categoryInput
+        category_name: categoryInput.trim()
       });
     
     const newCategory = {
@@ -78,6 +106,7 @@ const Disease = () => {
       const newDisease = {
         id: response.data.disease.d_id,
         name: response.data.disease.disease_name,
+        categoryId: response.data.disease.c_id,
         category: category.name,
       };
       setDisease((prevDisease) => [...prevDisease, newDisease]);
@@ -89,6 +118,51 @@ const Disease = () => {
       
     }
   };
+
+
+  const handleEdit = (disease) =>{
+      setSelectedCategory(disease.categoryId);
+      setDiseaseInput(disease.name)
+      setEditId(disease.id);
+
+  }
+
+  const handleUpdateDisease = async() =>{
+    if (!diseaseInput.trim() || !selectedCategory || !editId) return;
+
+    const category = categories.find((cat) => (
+      cat.id === Number(selectedCategory)
+    ));
+
+      try{
+        const response = await axios.put(`${API_BASE_URL}/update-disease/${editId}`, {
+          c_id: Number(selectedCategory),
+          disease_name: diseaseInput
+        });
+
+        const updatedDisease = {
+          id: response.data.disease.d_id,
+          name: response.data.disease.disease_name,
+          categoryId: response.data.disease.c_id,
+          category: category.name,
+        };
+
+        setDisease((prevDisease) =>
+          prevDisease.map((item) =>
+            item.id === editId ? updatedDisease : item
+          )
+        );
+
+        setSelectedCategory("");
+        setDiseaseInput("");
+        setEditId(null);
+      }
+      catch(err)
+      {
+        console.error(err.response?.data || err.message);
+      }
+  }
+  
   return (
     <>
       <h1 className="text-[26px] font-semibold px-12">Categories of Disease</h1>
@@ -135,9 +209,9 @@ const Disease = () => {
           />
           <button
             className="bg-black text-white px-4 py-2 tracking-wides font-semibold rounded-lg"
-            onClick={handleAddDisease}
+            onClick={editId ? handleUpdateDisease : handleAddDisease}
           >
-            Save
+            {editId ? "Update" : "Save"}
           </button>
         </div>
       </section>
@@ -160,8 +234,8 @@ const Disease = () => {
                 <td>{disease.name}</td>
                 <td>{disease.category}</td>
                 <td className="flex justify-center items-center gap-2 p-2">
-                  <EditButton btn="Edit" />
-                  <DeleteButton deleteBtn="Delete" />
+                  <EditButton btn="Edit" onClick={()=>handleEdit(disease)} />
+                  <DeleteButton deleteBtn="Delete" onClick={()=>handleDeleteDisease(disease.id)}/>
                 </td>
               </tr>
             ))
