@@ -2,6 +2,7 @@ import React from 'react'
 import { FaEnvelope, FaCcMastercard, FaCcPaypal, FaCcVisa } from 'react-icons/fa'
 import { SiAmericanexpress } from 'react-icons/si'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion';
 
 const footerColumns = [
   {
@@ -28,10 +29,15 @@ const footerColumns = [
 ]
 
 const Footer = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
-    <footer className='relative bg-(--footer-bg) text-(--white)'>
+
+    <motion.footer className='relative bg-(--footer-bg) text-(--white)'
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}>
       <div className='mx-auto max-w-[1365px] px-10 py-24'>
         <div className='grid gap-14 md:grid-cols-2 lg:grid-cols-4'>
           {footerColumns.map((column) => (
@@ -65,13 +71,13 @@ const Footer = () => {
 
       <button
         type='button'
-        onClick={()=>navigate("/contact")}
+        onClick={() => navigate("/contact")}
         className='fixed bottom-0 right-6 flex items-center z-1 gap-3 bg-(--footer-contact) px-5 py-2 text-[18px] font-semibold text-(--white) shadow-xl'
       >
         <FaEnvelope className='text-[18px]' />
         Contact Us
       </button>
-    </footer>
+    </motion.footer>
   )
 }
 

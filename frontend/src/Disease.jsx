@@ -5,10 +5,12 @@ import Navbar from './Components/Layouts/Navbar';
 import { API_BASE_URL } from './config/api';
 import Footer from './Components/Layouts/Footer';
 import { Link } from 'react-router-dom';
+import { slugify } from '../utils/Slugify';
 
 const Disease = () => {
      const [categories, setCategories] = useState([]);
       const [disease, setDisease] = useState([]);
+      
 
     useEffect(() => {
     const fetchDisease = async () => {
@@ -39,11 +41,12 @@ const Disease = () => {
     fetchDisease();
 
   }, []);
+
   return (
     <>
     <Navbar/>
 
-    <section className='pt-10 flex gap-6 flex-wrap w-10/12 mx-auto'>
+    <section className='pt-10 flex gap-6 flex-wrap w-11/12 mx-auto'>
             {categories.map((item) => {
               const relatedDiseases = disease.filter(
                 (entry) => entry.category === item.name,
@@ -54,14 +57,14 @@ const Disease = () => {
               }
 
               return (
-                <div key={item.id} className="mt-6">
-                  <h2 className="font-semibold text-green-800 underline text-[20px]">{item.name}</h2>
-                  <ul className="list-disc px-10">
+                <div key={item.id} className="mt-6 w-70">
+                  <h2 className="font-semibold text-green-700 tracking-wide py-2 border-b-2 border-amber-800 text-[20px]">{item.name.toUpperCase()}</h2>
+                  <ul className="px-5 py-2">
                     {relatedDiseases.map((entry) => (
-                      <li key={entry.id}>
-                        <Link to="/">{entry.name}</Link>
+                      <li key={entry.id} className='py-1'>
+                        <Link to={`/diseases/${slugify(entry.name+ "-" + entry.id)}`} className='text-gray-800'>{entry.name[0].toUpperCase()+ entry.name.slice(1)}</Link>
                       </li>
-                    ))}
+                    ))} 
                   </ul>
                 </div>
               );

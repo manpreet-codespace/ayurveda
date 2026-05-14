@@ -119,7 +119,7 @@ const Ayurveda = () => {
                   <ul className="list-disc px-10">
                     {relatedDiseases.map((entry) => (
                       <li key={entry.id}>
-                        <Link to="/">{entry.name}</Link>
+                        <Link to="/" className="hover:text-red-400">{entry.name}</Link>
                       </li>
                     ))}
                   </ul>

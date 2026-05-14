@@ -12,7 +12,8 @@ const AppRoutes = () => {
     { path: '/join-hands', element: <JoinHands /> },
     { path: '/contact', element: <Contact /> },
     { path: '/ayurveda', element: <Ayurveda /> },
-    {path: '/diseases', element:<Disease/>},
+    { path: '/diseases', element: <Disease /> },
+    { path: '/diseases/:slug', element: <Disease /> },
     adminRoutes,
   ])
 }
