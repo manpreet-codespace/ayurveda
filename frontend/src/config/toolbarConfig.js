@@ -1,0 +1,41 @@
+export const toolbarConfig ={
+    readonly:false,
+    placeholder: "Enter you description...",
+    height:400,
+    width:"95%",
+    toolbar:true,
+    toolbarAdaptive:false,
+    showCharsCounter:true,
+    showWordsCounter:true,
+    showXPathInStatusBar:false,
+
+    buttons:[
+    "bold",
+    "italic",
+    "underline",
+    "|",
+    "fontsize",
+    "font",
+    "brush",
+    "|",
+    "left",
+    "center",
+    "right",
+    "justify",
+    "|",
+    "ul",
+    "ol",
+    "table",
+    "|",
+    "image",
+    "video",
+    "link",
+    "|",
+    "undo",
+    "redo"
+
+    ],
+    uploader:{
+        insertImageAsBase64URI:true,
+    },
+}

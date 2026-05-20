@@ -165,22 +165,25 @@ const Disease = () => {
   
   return (
     <>
-      <h1 className="text-[26px] font-semibold px-12">Categories of Disease</h1>
-      <section className="bg-white w-11/12 p-10 flex gap-6 mx-auto mt-4 rounded-xl">
+      <section className="bg-white w-11/12 p-10 mx-auto mt-4 rounded-xl">
+      <h1 className="text-[20px] font-semibold pb-2">Categories of Disease</h1>
+       <div className="flex gap-6">
+
         <input
           type="text"
           onChange={(e) => setCategoryInput(e.target.value)}
           value={categoryInput}
           placeholder="Categories of disease"
           className=" p-2 w-4/12 border border-gray-300 rounded-sm"
-        />
+          />
 
         <button
           className="px-4 py-2 bg-black text-white font-semibold tracking-widest rounded-lg"
           onClick={handleAddCategory}
-        >
+          >
           Save
         </button>
+      </div>
       </section>
       <section className="bg-white w-11/12 p-10 flex flex-col gap-6 mx-auto rounded-xl mt-4">
         <div>
