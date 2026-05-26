@@ -58,3 +58,29 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/*
+  Tailwind's base reset removes default list markers.
+  Jodit outputs plain ul/ol markup, so we restore list styling inside editor content.
+*/
+.jodit-wysiwyg ul,
+.jodit-container .jodit-wysiwyg ul,
+.jodit-react-container .jodit-wysiwyg ul {
+  list-style: disc;
+  margin: 1em 0;
+  padding-left: 2rem;
+}
+
+.jodit-wysiwyg ol,
+.jodit-container .jodit-wysiwyg ol,
+.jodit-react-container .jodit-wysiwyg ol {
+  list-style: decimal;
+  margin: 1em 0;
+  padding-left: 2rem;
+}
+
+.jodit-wysiwyg li,
+.jodit-container .jodit-wysiwyg li,
+.jodit-react-container .jodit-wysiwyg li {
+  display: list-item;
+}

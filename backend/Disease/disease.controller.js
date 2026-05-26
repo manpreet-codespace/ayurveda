@@ -2,7 +2,13 @@ import { saveCategoryServices } from "../Category/category.service.js";
 import Category from "../Category/category.model.js";
 import sequelize from "../db/pg_db.js";
 import Disease from "./disease.model.js";
-import { deleteDiseaseService, saveDiseaseService, updateDiseaseService } from "./disease.service.js";
+import {
+    deleteDiseaseService,
+    getDiseaseDescriptionService,
+    saveDiseaseService,
+    updateDiseaseDescriptionService,
+    updateDiseaseService
+} from "./disease.service.js";
 
 export const saveDiseaseAndCategory = async(req, res)=>{
     const transaction = await sequelize.transaction();
@@ -114,7 +120,7 @@ export const deleteDisease = async(req,res)=> {
         {
             return res.status(400).json({
                 success:false,
-                message:"Diease id is required"
+                message:"Disease id is required"
 
             })
         }
@@ -127,7 +133,7 @@ export const deleteDisease = async(req,res)=> {
                 return res.status(404)
                 .json({
                     success:false,
-                    message:"Diease not found"
+                    message:"Disease not found"
                 })
             }
 
@@ -136,7 +142,7 @@ export const deleteDisease = async(req,res)=> {
             return res.status(200)
             .json({
                 success:true,
-                message:"Diease deleted successfully"
+                message:"Disease deleted successfully"
 
             })
 
@@ -147,7 +153,7 @@ export const deleteDisease = async(req,res)=> {
         return res.status(500)
         .json({
             success:false,
-            message:`diease deleted error ${err.message}`
+            message:`disease deleted error ${err.message}`
         })
     }
 
@@ -217,3 +223,99 @@ export const updateDisease = async(req,res)=> {
         });
     }
 }
+
+
+export const getDiseaseDescription = async(req,res)=>{
+    try{
+        const { slug } = req.params;
+
+        if (!slug) {
+            return res.status(400).json({
+                success: false,
+                message: "Disease slug is required"
+            });
+        }
+
+        const disease = await getDiseaseDescriptionService(slug);
+
+        if (!disease) {
+            return res.status(404).json({
+                success: false,
+                message: "Disease not found"
+            });
+        }
+
+        return res.status(200).json({
+            success:true,
+            disease
+        });
+
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+            success:false,
+            message:`Fetch error ${err.message}`
+
+        })
+
+    }
+}
+
+export const updateDiseaseDescription = async (req, res) => {
+    const transaction = await sequelize.transaction();
+
+    try {
+        const { d_id } = req.params;
+        const { description } = req.body;
+
+        if (!d_id) {
+            await transaction.rollback();
+
+            return res.status(400).json({
+                success: false,
+                message: "Disease id is required"
+            });
+        }
+
+        if (typeof description !== "string") {
+            await transaction.rollback();
+
+            return res.status(400).json({
+                success: false,
+                message: "Description must be a string"
+            });
+        }
+
+        const disease = await updateDiseaseDescriptionService(
+            d_id,
+            description.trim(),
+            transaction
+        );
+
+        if (!disease) {
+            await transaction.rollback();
+
+            return res.status(404).json({
+                success: false,
+                message: "Disease not found"
+            });
+        }
+
+        await transaction.commit();
+
+        return res.status(200).json({
+            success: true,
+            message: "Disease description updated successfully",
+            disease
+        });
+    }
+    catch (err) {
+        await transaction.rollback();
+
+        return res.status(500).json({
+            success: false,
+            message: `Disease description update error ${err.message}`
+        });
+    }
+};

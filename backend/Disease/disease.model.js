@@ -27,6 +27,13 @@ const Disease = sequelize.define("Disease",{
             },
             onDelete:"SET NULL",
             onUpdate:"CASCADE"
+        },
+        slug:{
+            type:DataTypes.STRING,
+            unique:true
+        },
+        description:{
+            type:DataTypes.TEXT("long")
         }
         },
 

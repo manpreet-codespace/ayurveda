@@ -32,6 +32,7 @@ app.use((req, res, next) => {
     return res.sendStatus(204);
   }
 
+  
   next();
 });
 app.use(express.json());
