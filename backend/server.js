@@ -8,6 +8,12 @@ import diseaseRouter from "./Disease/disease.routes.js";
 import bodyParser from "body-parser";
 import "./Category/category.model.js";
 import "./Disease/disease.model.js";
+import Gallery from "./Gallery/gallery.model.js";
+import galleryRouter from "./Gallery/gallery.routes.js";
+import { uploadsDir } from "./Config/uploadConfig.js";
+import InquiryUsers from "./InquiryUsers/InquiryUsers.model.js";
+import inquiryRouter from "./InquiryUsers/InquiryUsers.routes.js";
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: resolve(__dirname, ".env") });
@@ -43,13 +49,17 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api",diseaseRouter);
+app.use("/api",diseaseRouter,galleryRouter,inquiryRouter);
+app.use("/api/uploads", express.static(uploadsDir));
+
 
 app.listen(port, async () => {
   console.log(`Server is listening on ${port}`);
 
   try {
     await connectDB();
+    await Gallery.sync();
+    await InquiryUsers.sync();
   } catch (err) {
     console.error("Server started, but database connection failed:", err.message);
   }

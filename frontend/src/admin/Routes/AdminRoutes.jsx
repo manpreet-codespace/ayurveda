@@ -2,6 +2,7 @@ import Product from '../../admin/Pages/Product'
 import AdminLayout from "../Layout/AdminLayout";
 import Dashboard from "../Pages/Dashboard";
 import Disease from '../Pages/Disease';
+import Gallery from '../Pages/Gallery';
 import Treatment from '../Pages/Treatment';
 
 const AdminRoutes={
@@ -11,7 +12,8 @@ const AdminRoutes={
         {path:"dashboard", element: <Dashboard/>},
         {path:"products", element: <Product/>},
         {path:"disease" , element:<Disease/>},
-        {path:"treatment", element:<Treatment/>}
+        {path:"treatment", element:<Treatment/>},
+        {path:"gallery", element: <Gallery/>}
     ]
 }
 

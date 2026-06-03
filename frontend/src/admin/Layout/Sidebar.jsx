@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {LuActivity,LuStethoscope,LuLeaf} from 'react-icons/lu';
+import {LuActivity,LuStethoscope,LuLeaf,LuImages} from 'react-icons/lu';
 import { FaBox} from "react-icons/fa";
 
 const Sidebar = () => {
@@ -16,6 +16,8 @@ const Sidebar = () => {
                     <Link to="/admin/products" className='flex gap-2 items-center py-2'><span><FaBox/></span>Product</Link>
                     <Link to="/admin/disease" className='flex gap-2 items-center py-2'><span><LuLeaf/></span>Disease</Link>
                     <Link to="/admin/treatment" className='flex gap-2 items-center py-2'><span><LuStethoscope/></span>Treatment</Link>
+                    <Link to="/admin/gallery" className='flex gap-2 items-center py-2'><span><LuImages /></span>Gallery</Link>
+
                 </nav>
             </div>
         </>

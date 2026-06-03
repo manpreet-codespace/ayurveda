@@ -6,6 +6,8 @@ import Ayurveda from './Ayurveda.jsx'
 import adminRoutes from './admin/Routes/AdminRoutes.jsx'
 import Disease from './Disease.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
+import Gallery from './Gallery.jsx'
+import Products from './Products.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
@@ -16,6 +18,8 @@ const AppRoutes = () => {
     { path: '/diseases', element: <Disease /> },
     { path: '/diseases/:slug', element: <Disease /> },
     { path: '/not-found', element: <NotFoundPage/> },
+    { path: '/gallery' , element: <Gallery/>},
+    { path: '/products', element: <Products/>},
     adminRoutes,
   ])
 }

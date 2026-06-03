@@ -10,6 +10,7 @@ const Disease = sequelize.define("Disease",{
             primaryKey:true,
             autoIncrement:true
         }  ,
+   
         
         disease_name:{
             type:DataTypes.STRING,

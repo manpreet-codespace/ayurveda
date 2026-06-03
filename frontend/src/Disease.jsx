@@ -5,6 +5,7 @@ import Navbar from './Components/Layouts/Navbar';
 import { API_BASE_URL } from './config/api';
 import Footer from './Components/Layouts/Footer';
 import { Link, useParams } from 'react-router-dom';
+import ContactForm from './Components/UI/ContactForm';
 
 const Disease = () => {
      const [categories, setCategories] = useState([]);
@@ -110,9 +111,11 @@ const Disease = () => {
         <div
           className="mt-6 prose max-w-none"
           dangerouslySetInnerHTML={{
-            __html: selectedDisease.description || "<p>Description will be added soon.</p>",
+            __html: selectedDisease.description  || "<p>Description will be added soon.</p>",
           }}
         />
+
+        <ContactForm/>
       </section>
     );
   };
@@ -121,6 +124,7 @@ const Disease = () => {
     <>
     <Navbar/>
     {slug ? renderDiseaseDetails() : renderDiseaseList()}
+    
     <Footer/>
     </>
   )
