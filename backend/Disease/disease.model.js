@@ -37,7 +37,7 @@ const Disease = sequelize.define("Disease",{
             type:DataTypes.TEXT("long")
         }
         },
-
+ 
         {
             tableName:"Diseases",
             timestamps:true,
