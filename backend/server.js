@@ -13,7 +13,9 @@ import galleryRouter from "./Gallery/gallery.routes.js";
 import { uploadsDir } from "./Config/uploadConfig.js";
 import InquiryUsers from "./InquiryUsers/InquiryUsers.model.js";
 import inquiryRouter from "./InquiryUsers/InquiryUsers.routes.js";
-
+import productRouter from "./Product/product.route.js";
+import Product from "./Product/product.model.js";
+import productCategory from "./Category/productCategory.model.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: resolve(__dirname, ".env") });
@@ -49,7 +51,7 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api",diseaseRouter,galleryRouter,inquiryRouter);
+app.use("/api",diseaseRouter,galleryRouter,inquiryRouter,productRouter);
 app.use("/api/uploads", express.static(uploadsDir));
 
 
@@ -60,6 +62,9 @@ app.listen(port, async () => {
     await connectDB();
     await Gallery.sync();
     await InquiryUsers.sync();
+    await productCategory.sync();
+    await Product.sync();
+
   } catch (err) {
     console.error("Server started, but database connection failed:", err.message);
   }

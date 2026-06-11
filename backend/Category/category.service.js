@@ -32,20 +32,20 @@ export const saveCategoryServices = async ({ category_name }, transaction) => {
 };
 
 
-export const saveProductCategoryServices = async({productCategoryName},transaction)=>{
+export const saveProductCategoryServices = async({product_category_name},transaction)=>{
 
-  const trimmedProductCategoryName = productCategoryName.trim();
+  const trimmedProductCategoryName = product_category_name.trim();
 
   const existingProductCategory = await productCategory.findOne({
     where:where(
-      fn("LOWER",col("productCategoryName")),
+      fn("LOWER",col("product_category_name")),
       Op.eq,
       trimmedProductCategoryName.toLowerCase()
     ),
     transaction
   });
 
-  if(existingCategory)
+  if(existingProductCategory)
   {
     const error = new Error("Product category already exists");
     error.statusCode = 409;
@@ -55,7 +55,7 @@ export const saveProductCategoryServices = async({productCategoryName},transacti
 
   const product_category = await productCategory.create(
     {
-      productCategoryName:trimmedProductCategoryName
+      product_category_name:trimmedProductCategoryName
     },
     {transaction}
   )

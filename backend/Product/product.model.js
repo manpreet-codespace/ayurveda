@@ -1,6 +1,7 @@
 import sq from "sequelize";
-import sequelize from "../db/pg_db.js";import productCategory from "../Category/productCategory.model.js";
-a
+import sequelize from "../db/pg_db.js";
+import productCategory from "../Category/productCategory.model.js";
+
 
 const {DataTypes} = sq;
 
@@ -27,16 +28,15 @@ const Product = sequelize.define("Product" , {
     variant:{
         type:DataTypes.INTEGER,
         allowNull:false,
-        unique:true
     },
     discount:{
         type:DataTypes.INTEGER,
 
     },
-    stocks:{
-        type:DataTypes.INTEGER,
+    // stocks:{
+    //     type:DataTypes.INTEGER,
         
-    }
+    // }
 
 },
 

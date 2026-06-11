@@ -1,9 +1,12 @@
 import JoditEditor from 'jodit-react';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toolbarConfig } from '../../config/toolbarConfig';
 import EditButton from '../Components/EditButton';
 import DeleteButton from '../Components/DeleteButton';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
+import axios from 'axios';
+import {API_BASE_URL} from './../../config/api';
+
 
 const Product = () => {
   const editorRef = useRef(null);
@@ -11,13 +14,82 @@ const Product = () => {
 
   const [open,setOpen] = useState(false);
 
+  const [categoryInput, setCategoryInput] = useState("");
+  const [categories,setCategories] = useState([]);
+
+  const [selectedCategory,setSelectedCategory] = useState("");
+
+  const [product,setProduct] = useState({});
+
+  
+
+  useEffect(()=>{
+      const fetchCategory = async() =>{
+        try{
+          const response = await axios.get(`${API_BASE_URL}/product-category-data`);
+
+          console.log(response.data.categories);
+          setCategories(response.data.categories);
+
+
+        }
+        catch(err)
+        {
+          console.log(err.response?.data || err.message);
+
+
+        }
+      }
+      fetchCategory();
+
+  },[])
+
+
+  const handleSavedCategories = async() =>{
+    if(!categoryInput.trim())
+      return;
+
+    const categoryExists = categories.some((category)=>(
+      category.name.toLowerCase() === categoryInput.trim().toLowerCase()
+    ))
+
+    if(categoryExists)
+    {
+      console.error("Category is already exists");
+      return;
+
+    }
+
+    try{
+      const response = await axios.post(`${API_BASE_URL}/save-product-category`,
+        {product_category_name: categoryInput.trim()}
+       )
+
+       const newProductCategory ={
+        id:response.data.category.c_id,
+        name:response.data.category.product_category_name
+       }
+
+       setCategories((prev)=> [...prev,newProductCategory]);
+       setCategoryInput("");
+
+    }
+    catch(err)
+    {
+      console.error(err.response?.data || err.message)
+    }
+  }
 
   return (
     <>
       <section className='bg-white p-3 w-11/12 mx-auto rounded-lg'>
         <h1 className='text-[20px] font-semibold'>Categories of Products</h1>
-        <input type="text" placeholder='Write categories' className='border border-gray-200 w-50 p-2 m-2' />
-        <button className='bg-black py-2 px-4 text-white rounded-lg tracking-wider font-semibold'>Save</button>
+        <input type="text" placeholder='Write categories' className='border border-gray-200 w-50 p-2 m-2'
+        onChange={(e) => setCategoryInput(e.target.value)} 
+        value={categoryInput}
+        />
+        <button className='bg-black py-2 px-4 text-white rounded-lg tracking-wider font-semibold' onClick={handleSavedCategories}
+        >Save</button>
       </section>
       <br />
       <section className='bg-white p-3 w-11/12 mx-auto rounded-lg '>
@@ -25,8 +97,17 @@ const Product = () => {
 
         <div className='flex gap-4 mt-2 '>
           <label htmlFor='category'>Categories</label>
-          <select name='category'>
+          <select name='category'
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          value={selectedCategory}>
             <option value="none">--Select--</option>
+            {
+              categories.map((cat)=>(
+                  <option key={cat.c_id} value={cat.product_category_name} >
+                      {cat.product_category_name}
+                  </option>
+              ))
+            }
           </select>
         </div>
 
