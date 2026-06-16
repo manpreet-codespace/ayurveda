@@ -1,4 +1,4 @@
-import { saveProductService } from "./product.service.js";
+import { saveProductImages, saveProductService } from "./product.service.js";
 import { saveProductCategoryServices } from "../Category/category.service.js";
 import sequelize from "../db/pg_db.js";
 import productCategory from "../Category/productCategory.model.js";
@@ -50,9 +50,10 @@ export const saveProductController = async(req,res) =>{
     const transaction = await sequelize.transaction();
     try{    
 
-        const {c_id, p_name,price,sku, variant} = req.body;
+        const {c_id, p_name,price,sku, variant,description} = req.body;
+        const files = req.files || [] ;
 
-        if(!c_id || !p_name || !price || !sku ||!variant){
+        if(!c_id || !p_name || !price || !sku || !variant){
             await transaction.rollback();
 
             return res.status(400).json({
@@ -60,7 +61,21 @@ export const saveProductController = async(req,res) =>{
                 message:"Product details are required"
             })
         }
-        const product = await saveProductService(req.body, transaction);
+
+        const imageURLs = await saveProductImages(files);
+
+        const payload = {
+            c_id: Number(c_id),
+            p_name,
+            price: Number(price),
+            sku,
+            variant: Number(variant),
+            discount: req.body.discount || null,
+            image: imageURLs ,// service will stringify
+            description
+        };
+
+        const product = await saveProductService(payload, transaction);
 
      
         await transaction.commit();
@@ -86,7 +101,7 @@ export const updateProductController = async(req,res) =>{
     const transaction = await sequelize.transaction();
     try{
         const {p_id} = req.params;
-        const {c_id, p_name,price,sku, variant} = req.body;
+        const {c_id, p_name,price,sku, variant,description} = req.body;
 
         if(!c_id || !p_name || !price || !sku ||!variant){
             await transaction.rollback();

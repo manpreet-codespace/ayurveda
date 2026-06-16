@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { toolbarConfig } from '../../config/toolbarConfig';
 import EditButton from '../Components/EditButton';
 import DeleteButton from '../Components/DeleteButton';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
+import { FaAudioDescription, FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 import axios from 'axios';
 import {API_BASE_URL} from './../../config/api';
 
@@ -16,6 +16,7 @@ const Product = () => {
     discount:'',
     sku:'',
     variant:'',
+    description:''
 
   }
   const editorRef = useRef(null);
@@ -34,13 +35,35 @@ const Product = () => {
 
   const [selectedProduct,setSelectedProduct] = useState("");
   const [stockInput,setStockInput] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const fileInputRef = useRef(null);
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    setSelectedFiles(files);
+    const urls = files.map((f) => URL.createObjectURL(f));
+    // revoke previous previews
+    setPreviews((prev) => {
+      prev.forEach((u) => URL.revokeObjectURL(u));
+      return urls;
+    });
+  };
 
-  
- const handleChange =(e) =>{
+  useEffect(() => {
+    return () => {
+      previews.forEach((u) => URL.revokeObjectURL(u));
+    };
+  }, [previews]);
+
+  const handleChange =(e) =>{
+      if (!e) return;
+      const name = e.target ? e.target.name : e.name;
+      const value = e.target ? e.target.value : e.value;
+      if (!name) return;
       setProduct((prev)=>({
         ...prev,
-        [e.target.name]:e.target.value
+        [name]: value
       }))
  }
 
@@ -70,25 +93,29 @@ const Product = () => {
 
  const handleSavedProducts = async() =>{
 
-  if(!product.p_name.trim() || !product.price.trim() || !product.sku.trim()|| !product.variant.trim() ||!selectedCategory)
+  const priceInvalid = product.price === "" || product.price === null || Number.isNaN(Number(product.price));
+  const variantInvalid = product.variant === "" || product.variant === null || Number.isNaN(Number(product.variant));
+  if (!product.p_name || !String(product.p_name).trim() || priceInvalid || !product.sku || !String(product.sku).trim() || variantInvalid || !selectedCategory) {
     return;
+  }
 
   try{
+    const formData = new FormData();
+    formData.append('c_id', Number(selectedCategory));
+    formData.append('p_name', product.p_name);
+    formData.append('price', product.price);
+    formData.append('sku', product.sku);
+    formData.append('variant', product.variant);
+    if (product.discount) formData.append('discount', product.discount);
+    // description from rich editor
+    if (content) formData.append('description', content);
 
-    const productData = {
-      c_id:Number(selectedCategory),
-      p_name:product.p_name,
-      price:product.price,
-      sku:product.sku,
-      variant:product.variant,
-      discount:product.discount
-    }
+    selectedFiles.forEach((file) => formData.append('images', file));
 
     const response = editId
-      ? await axios.put(`${API_BASE_URL}/product/${editId}`, productData)
-      : await axios.post(`${API_BASE_URL}/product`, productData)
+      ? await axios.put(`${API_BASE_URL}/product/${editId}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      : await axios.post(`${API_BASE_URL}/product`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
-    console.log(response.data);
     const savedCategory = categories.find((cat)=>(
       cat.c_id === Number(selectedCategory)
     ))
@@ -99,7 +126,7 @@ const Product = () => {
       };
 
     if(editId){
-      setProducts((prev)=> prev.map((item)=>
+      setProducts((prev)=> prev.map((item) =>
         item.p_id === editId ? savedProduct : item
       ));
       setEditId(null);
@@ -113,6 +140,10 @@ const Product = () => {
 
     setProduct(initialProduct);
     setSelectedCategory("");
+    setSelectedFiles([]);
+    setPreviews([]);
+    if (fileInputRef.current) fileInputRef.current.value = null;
+    setContent("");
   }
   catch(err)
   {
@@ -133,6 +164,30 @@ const Product = () => {
     setSelectedCategory(String(item.c_id));
     setEditId(item.p_id);
     setOpenProductId(null);
+    // robustly set editor content: item.description may be null, HTML string, or stringified JSON
+    let editorContent = "";
+    try {
+      if (item.description) {
+        if (typeof item.description === 'string') {
+          // handle case where description itself is a JSON string of a string
+          const trimmed = item.description.trim();
+          if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith('\\"') && trimmed.endsWith('\\"'))) {
+            editorContent = JSON.parse(item.description);
+          } else {
+            editorContent = item.description;
+          }
+        } else {
+          editorContent = String(item.description);
+        }
+      }
+    } catch (err) {
+      editorContent = String(item.description || "");
+    }
+    setContent(editorContent);
+    // clear file input / previews when switching to edit mode
+    setSelectedFiles([]);
+    setPreviews([]);
+    if (fileInputRef.current) fileInputRef.current.value = null;
   }
 
   const handleDeleteProduct = async(p_id) =>{
@@ -231,6 +286,18 @@ const Product = () => {
     }
   }
 
+  const getImageUrls = (item) => {
+    try {
+      let imgs = item.image;
+      if (!imgs) return [];
+      if (typeof imgs === 'string') imgs = JSON.parse(imgs);
+      if (!Array.isArray(imgs)) return [];
+      return imgs.map((p) => `${API_BASE_URL}/${p}`);
+    } catch (err) {
+      return [];
+    }
+  };
+
 
   return (
     <>
@@ -272,8 +339,15 @@ const Product = () => {
 
         <div className='flex gap-4 my-2 items-center '>
           <label htmlFor="image">Upload your image here </label>
-          <input name='image' type='file' accept='image/*' />
+          <input name='image' type='file' accept='image/*' multiple ref={fileInputRef} onChange={handleFileChange} />
         </div>
+        {previews.length > 0 && (
+          <div className='flex gap-2 mt-2'>
+            {previews.map((src, idx) => (
+              <img key={idx} src={src} alt={`preview-${idx}`} className='h-20 w-20 object-cover rounded-md border' />
+            ))}
+          </div>
+        )}
 
 
         <div className='flex gap-6'>
@@ -312,12 +386,15 @@ const Product = () => {
 
         <div className='mt-3'>
 
-          <h1>Description</h1>
+          <label htmlFor='description'>Description</label>
           <JoditEditor
             ref={editorRef}
             value={content}
             config={toolbarConfig}
             onBlur={(newContent) => setContent(newContent)}
+            onChange={handleChange}
+            value={product.description}
+            name="description"
           />
 
         </div>
@@ -434,11 +511,30 @@ const Product = () => {
                         </div>
                         <div className='rounded-md bg-gray-50 p-3 md:col-span-2'>
                           <p className='text-xs font-semibold uppercase tracking-wide text-gray-500'>Description</p>
-                          <p className='mt-1 text-sm font-semibold text-gray-900'>No description added</p>
+                          <div className='mt-1 text-sm font-semibold text-gray-900'>
+                            {item.description ? (
+                                <span>Desciption added</span>
+                            ) : (
+                              <span>No description added</span>
+                            )}
+                          </div>
                         </div>
                         <div className='rounded-md bg-gray-50 p-3 md:col-span-2'>
                           <p className='text-xs font-semibold uppercase tracking-wide text-gray-500'>Image</p>
-                          <p className='mt-1 text-sm font-semibold text-gray-900'>Not Added yet</p>
+                          <div className='mt-1 text-sm font-semibold text-gray-900'>
+                            {(() => {
+                              const urls = getImageUrls(item);
+                              if (urls.length === 0) return <span>Not Added yet</span>;
+                              return (
+                                <div className='flex gap-2'>
+                                  {urls.map((u, i) => (
+                                    <img key={i} src={u} alt={`${item.p_name}-${i}`} className='h-20 w-20 object-cover rounded-md border' />
+                                  ))}
+                                </div>
+                              );
+                            })()}
+                          </div>
+                          
                         </div>
                       </div>
                     </td>

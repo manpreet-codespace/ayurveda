@@ -40,7 +40,9 @@ const Product = sequelize.define("Product" , {
     image:{
         type:DataTypes.STRING,
         allowNull:false,
-        
+    },
+    description:{
+        type:DataTypes.TEXT("long")
     }
 
 },
