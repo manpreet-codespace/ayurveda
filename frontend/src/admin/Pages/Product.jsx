@@ -30,6 +30,11 @@ const Product = () => {
 
   const [product,setProduct] = useState({...initialProduct});
   const [products,setProducts] = useState([]);
+  const [editId,setEditId] = useState(null);
+
+  const [selectedProduct,setSelectedProduct] = useState("");
+  const [stockInput,setStockInput] = useState("");
+
 
   
  const handleChange =(e) =>{
@@ -68,45 +73,95 @@ const Product = () => {
   if(!product.p_name.trim() || !product.price.trim() || !product.sku.trim()|| !product.variant.trim() ||!selectedCategory)
     return;
 
-    // const category = categories.find((cat)=>(
-    //   cat.id === Number(selectedCategory)
-    // ))
   try{
 
-    const response = await axios.post(`${API_BASE_URL}/product`,
-      {
-        c_id:Number(selectedCategory),
-        p_name:product.p_name,
-        price:product.price,
-        sku:product.sku,
-        variant:product.variant,
-        discount:product.discount
-      }
-    )
+    const productData = {
+      c_id:Number(selectedCategory),
+      p_name:product.p_name,
+      price:product.price,
+      sku:product.sku,
+      variant:product.variant,
+      discount:product.discount
+    }
+
+    const response = editId
+      ? await axios.put(`${API_BASE_URL}/product/${editId}`, productData)
+      : await axios.post(`${API_BASE_URL}/product`, productData)
 
     console.log(response.data);
     const savedCategory = categories.find((cat)=>(
       cat.c_id === Number(selectedCategory)
     ))
-    setProducts((prev)=> [
-      ...prev,
-      {
+
+    const savedProduct = {
         ...response.data.product,
         productCategory: savedCategory
-      }
-    ]);
+      };
+
+    if(editId){
+      setProducts((prev)=> prev.map((item)=>
+        item.p_id === editId ? savedProduct : item
+      ));
+      setEditId(null);
+    }
+    else{
+      setProducts((prev)=> [
+        ...prev,
+        savedProduct
+      ]);
+    }
+
     setProduct(initialProduct);
     setSelectedCategory("");
-
-
-
-
   }
   catch(err)
   {
     console.error(err.response?.data || err.message);
   }
  }
+
+
+  const handleEditProduct = (item) =>{
+    setProduct({
+      c_id:item.c_id || "",
+      p_name:item.p_name || "",
+      price:item.price || "",
+      discount:item.discount || "",
+      sku:item.sku || "",
+      variant:item.variant || "",
+    })
+    setSelectedCategory(String(item.c_id));
+    setEditId(item.p_id);
+    setOpenProductId(null);
+  }
+
+  const handleDeleteProduct = async(p_id) =>{
+    try{
+      await axios.delete(`${API_BASE_URL}/product/${p_id}`);
+
+      setProducts((prev)=> prev.filter((item)=> item.p_id !== p_id));
+
+      if(editId === p_id){
+        setProduct(initialProduct);
+        setSelectedCategory("");
+        setEditId(null);
+      }
+
+      if(openProductId === p_id){
+        setOpenProductId(null);
+      }
+    }
+    catch(err)
+    {
+      console.error(err.response?.data || err.message);
+    }
+  }
+
+  const handleCancelEdit = () =>{
+    setProduct(initialProduct);
+    setSelectedCategory("");
+    setEditId(null);
+  }
 
 
 
@@ -144,6 +199,38 @@ const Product = () => {
       console.error(err.response?.data || err.message)
     }
   }
+
+
+  const handleUpdateStock =async() =>{
+
+    if(!selectedProduct || stockInput ==="") return ;
+    try{
+      const response = await axios.put(`${API_BASE_URL}/product/${selectedProduct}/stock`,
+        {
+          stock:Number(stockInput)
+        }
+      );
+
+        setProducts((prev)=>
+            prev.map((item)=>(
+              item.p_id === Number(selectedProduct)
+              ?{...item, stock:response.data.product.stock}
+              :item
+            ))
+        )
+
+        setSelectedProduct("");
+        setStockInput("");
+
+
+    }
+    catch(err)
+    {
+      console.error(err.response?.data || err.message);
+
+    }
+  }
+
 
   return (
     <>
@@ -236,9 +323,15 @@ const Product = () => {
         </div>
 
         <div className='mt-10 flex justify-end'>
+          {editId && (
+            <button className='mr-2 rounded-lg border border-gray-300 px-4 py-2 font-semibold tracking-wider text-gray-700'
+            onClick={handleCancelEdit}>
+              Cancel
+            </button>
+          )}
           <button className='bg-black text-white py-2 px-4 tracking-wider font-semibold rounded-lg'
           onClick={handleSavedProducts}>
-            Save
+            {editId ? "Update" : "Save"}
           </button>
         </div>
 
@@ -249,18 +342,29 @@ const Product = () => {
 
         <div className='flex gap-4 mt-2 '>
           <label htmlFor='product'>Products</label>
-          <select name='product'>
-            <option value="none">--Select--</option>
+          <select name='product'
+          value={selectedProduct}
+          onChange={(e)=>setSelectedProduct(e.target.value)}
+          >
+            <option value="">--Select--</option>
+            {
+              products.map((product)=>(
+                  <option key={product.p_id} value={product.p_id}>{product.p_name}</option>
+                ))
+            }
           </select>
         </div>
 
         <div className='flex mt-2 gap-4 items-center'>
           <label htmlFor='stock'>Stocks</label>
-          <input type="number" name="stock" placeholder='Update stock here ' className='border border-gray-200 p-2 ' />
+          <input type="number" name="stock" placeholder='Update stock here ' className='border border-gray-200 p-2 ' 
+          onChange={(e)=>setStockInput(e.target.value)}
+          value={stockInput}/>
         </div>
 
         <div className='mt-10 flex justify-end'>
-          <button className='bg-black text-white py-2 px-4 tracking-wider font-semibold rounded-lg' >Save</button>
+          <button className='bg-black text-white py-2 px-4 tracking-wider font-semibold rounded-lg' 
+          onClick={handleUpdateStock}>Save</button>
         </div>
       </section>
 
@@ -303,8 +407,8 @@ const Product = () => {
                     </td>
                     <td className='p-3'>
                       <div className='flex items-center justify-center gap-2'>
-                        <EditButton btn="Edit" />
-                        <DeleteButton deleteBtn="Delete" />
+                        <EditButton btn="Edit" onClick={()=>handleEditProduct(item)} />
+                        <DeleteButton deleteBtn="Delete" onClick={()=>handleDeleteProduct(item.p_id)} />
                       </div>
                     </td>
                   </tr>
@@ -326,7 +430,7 @@ const Product = () => {
                         </div>
                         <div className='rounded-md bg-gray-50 p-3'>
                           <p className='text-xs font-semibold uppercase tracking-wide text-gray-500'>Stocks</p>
-                          <p className='mt-1 text-base font-semibold text-gray-900'>Not added</p>
+                          <p className='mt-1 text-base font-semibold text-gray-900'>{item.stock}</p>
                         </div>
                         <div className='rounded-md bg-gray-50 p-3 md:col-span-2'>
                           <p className='text-xs font-semibold uppercase tracking-wide text-gray-500'>Description</p>
