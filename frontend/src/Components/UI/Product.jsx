@@ -1,8 +1,50 @@
 import React, { useState } from 'react'
 import { FiEye, FiHeart, FiShoppingCart } from 'react-icons/fi'
+import { API_BASE_URL } from '../../config/api'
+import wireframeProductImage from '../../assets/image.png';
+
+
 
 const Product = ({name,img,price}) => {
   const [activeAction, setActiveAction] = useState(null)
+
+  const getImageUrl = () => {
+    if (!img) return wireframeProductImage
+
+    let imageValue = img
+
+    if (typeof imageValue === 'string') {
+      try {
+        const parsed = JSON.parse(imageValue)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          imageValue = parsed[0]
+        }
+      } catch {
+        imageValue = imageValue
+      }
+    }
+
+    if (Array.isArray(img) && img.length > 0) {
+      imageValue = img[0]
+    }
+
+    if (typeof imageValue !== 'string') return wireframeProductImage
+
+    const trimmed = imageValue.trim()
+    if (!trimmed) return wireframeProductImage
+
+    if (/^https?:\/\//i.test(trimmed)) {
+      return trimmed
+    }
+
+    if (trimmed.startsWith('/')) {
+      return `${API_BASE_URL}${trimmed}`
+    }
+
+    return `${API_BASE_URL}/${trimmed}`
+  }
+
+  const imageSrc = getImageUrl()
 
   const actionButtonClass = (action) =>
     `flex h-9 w-9 items-center justify-center rounded-full shadow-lg transition-all duration-300 ${
@@ -15,7 +57,7 @@ const Product = ({name,img,price}) => {
     <div className='group w-50 p-4'>
       <div className='relative overflow-hidden bg-white'>
         <img
-          src={img}
+          src={imageSrc}
           alt={name}
           className='h-64 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105'
         />
