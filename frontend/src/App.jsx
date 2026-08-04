@@ -161,8 +161,8 @@ function App() {
       <section className="h-40 flex justify-center items-center">
         <div className=" flex gap-6 rounded-lg justify-center">
           {
-            opd_timings.map((name, index) => (
-              <div key={index}>
+            opd_timings.map((name) => (
+              <div key={name.name}>
                 <OPD_timings name={name.name} />
               </div>
             ))
@@ -173,8 +173,8 @@ function App() {
       <section className="bg-(--pink) py-12" >
         <div className="flex flex-wrap gap-6 w-10/12 mx-auto ">
           {
-            problems_config.map((problem, index) => (
-              <div key={index}>
+            problems_config.map((problem) => (
+              <div key={problem.name}>
                 <Problems img={problem.img} name={problem.name} />
               </div>
             ))
@@ -196,10 +196,10 @@ function App() {
             spaceBetween={20}
           >
             {
-              award_images.map((award, index) => (
-                <div key={index}>
-                  <SwiperSlide><img src={award.img} /></SwiperSlide>
-                </div>
+              award_images.map((award) => (
+                <SwiperSlide key={award.img}>
+                  <img src={award.img} alt="award" />
+                </SwiperSlide>
               ))
             }
           </Swiper>
@@ -291,7 +291,7 @@ function App() {
         <div className="flex justify-center overflow-x-scroll w-9/12 mx-auto">
           {
             filtered.map((item, index) => (
-              <div key={index}>
+              <div key={`${item.name}-${item.price}-${item.categories}-${index}`}>
                 <Product name={item.name} img={item.img} price={item.price} />
               </div>
             ))
@@ -314,9 +314,9 @@ function App() {
         className="px-6 py-16"
       >
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-4 lg:grid-rows-2">
-          {problems.map((problem, index) => (
+          {problems.map((problem) => (
             <div
-              key={index}
+              key={problem.name}
               className={`group relative flex  justify-center overflow-hidden bg-(--surface) ${problem.className}`}
             >
               <img
@@ -343,9 +343,9 @@ function App() {
           Trusted by Thousands of Customers across 1500+ Cities Worldwide.
         </h1>
         <div className="mx-auto mt-10 flex max-w-7xl gap-4 overflow-x-auto px-6 pb-2">
-          {testimonials.map((item, index) => (
+          {testimonials.map((item) => (
             <div
-              key={index}
+              key={`${item.title}-${item.subtitle}`}
               className="relative h-80 min-w-45 overflow-hidden rounded-[10px] bg-black shadow-md"
             >
               <img
@@ -440,9 +440,7 @@ function App() {
                 </div>
           
             </motion.section>
-            <motion.section>
-              
-            </motion.section>
+        
       <Footer />
     </>
   )
