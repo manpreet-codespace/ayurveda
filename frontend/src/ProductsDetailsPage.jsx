@@ -15,7 +15,6 @@ const ProductsDetailsPage = () => {
   const maxQuantity = 10;
 
 
-
   const increase = () => {
     if (quantity < maxQuantity) {
       setQuantity((prev) => prev + 1)
@@ -99,7 +98,7 @@ const ProductsDetailsPage = () => {
   }, [p_id])
 
 
-  
+
   return (
     <>
       <Navbar />

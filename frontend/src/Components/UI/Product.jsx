@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FiEye, FiHeart, FiShoppingCart } from 'react-icons/fi'
 import { API_BASE_URL } from '../../config/api'
-import wireframeProductImage from '../../assets/product1.webp'
+import wireframeProductImage from '../../assets/image.png'
 import { useNavigate } from 'react-router-dom'
 
 
