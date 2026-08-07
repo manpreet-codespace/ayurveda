@@ -102,6 +102,7 @@ export const updateProductController = async(req,res) =>{
     try{
         const {p_id} = req.params;
         const {c_id, p_name,price,sku, variant,description} = req.body;
+        const files = req.files || [];
 
         if(!c_id || !p_name || !price || !sku ||!variant){
             await transaction.rollback();
@@ -123,7 +124,23 @@ export const updateProductController = async(req,res) =>{
             })
         }
 
-        await product.update(req.body, {transaction});
+        let imagePayload = product.image;
+
+        if(files.length > 0){
+            const imageURLs = await saveProductImages(files);
+            imagePayload = JSON.stringify(imageURLs);
+        }
+
+        await product.update({
+            c_id: Number(c_id),
+            p_name,
+            price: Number(price),
+            sku,
+            variant: Number(variant),
+            discount: req.body.discount ?? product.discount,
+            image: imagePayload,
+            description
+        }, {transaction});
 
         await transaction.commit();
 
@@ -246,8 +263,10 @@ export const updateProductStockController =async(req,res) =>{
             })
         }
 
+        const newStock = Number(product.stock || 0) + Number(stock)
+
         await product.update(
-            {stock:stock},
+            {stock:newStock},
             {transaction}
         )
         await transaction.commit();
@@ -267,6 +286,41 @@ export const updateProductStockController =async(req,res) =>{
         return res.status(500).json({
             success:false,
             message:err.message
+        })
+    }
+}
+
+
+ export const getProductById = async(req,res) =>{
+    const transaction = await sequelize.transaction();
+
+    try{
+        const {p_id} = req.params;
+        
+        const product  = await Product.findByPk(p_id, {transaction});
+        if(!product)
+        {
+            await transaction.rollback();
+
+            return res.status(404).json({
+                success: false,
+                message: "Product not found"
+            })
+
+        }
+        await transaction.commit();
+
+        return res.status(200).json({
+            success: true,
+            product
+        })
+    }
+    catch(err){
+        await transaction.rollback();
+
+        return res.status(500).json({
+            success: false,
+            message: err.message
         })
     }
 }

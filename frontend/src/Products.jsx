@@ -35,7 +35,7 @@ const Products = () => {
       <div className='my-10 flex '>
         {products.map((product)=>(
           <div key = {product.p_id}>
-            <Product img={product.image} name = {product.p_name} price = {product.price}/>
+            <Product img={product.image} name = {product.p_name} price = {product.price} p_id = {product.p_id}/>
           </div>
         ))}
       </div>

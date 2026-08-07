@@ -8,6 +8,7 @@ import Disease from './Disease.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 import Gallery from './Gallery.jsx'
 import Products from './Products.jsx'
+import ProductsDetailsPage from './ProductsDetailsPage.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
@@ -20,6 +21,9 @@ const AppRoutes = () => {
     { path: '/not-found', element: <NotFoundPage/> },
     { path: '/gallery' , element: <Gallery/>},
     { path: '/products', element: <Products/>},
+    { path: '/product-details', element: <ProductsDetailsPage/>},
+    { path: '/product-details/:p_id', element: <ProductsDetailsPage/>},
+
     adminRoutes,
   ])
 }

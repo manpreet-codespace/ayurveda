@@ -1,13 +1,32 @@
 import React, { useState } from 'react'
 import { FiEye, FiHeart, FiShoppingCart } from 'react-icons/fi'
 import { API_BASE_URL } from '../../config/api'
-import wireframeProductImage from '../../assets/image.png';
+import wireframeProductImage from '../../assets/product1.webp'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const Product = ({name,img,price}) => {
+const Product = ({p_id,name,img,price}) => {
   const [activeAction, setActiveAction] = useState(null)
+  const navigate = useNavigate();
 
+  const handleActionClick = (action) => {
+    setActiveAction(action)
+    if (action === 'view') {
+      navigate(`/product-details/${p_id}`);
+
+    }
+    else if ( action === 'cart')
+    {
+      navigate("/");
+
+    }
+    else if( action === 'wishlist')
+    {
+      navigate("/");
+
+    }
+  }
   const getImageUrl = () => {
     if (!img) return wireframeProductImage
 
@@ -24,8 +43,8 @@ const Product = ({name,img,price}) => {
       }
     }
 
-    if (Array.isArray(img) && img.length > 0) {
-      imageValue = img[0]
+    if (Array.isArray(imageValue) && imageValue.length > 0) {
+      imageValue = imageValue[0]
     }
 
     if (typeof imageValue !== 'string') return wireframeProductImage
@@ -69,7 +88,7 @@ const Product = ({name,img,price}) => {
             type='button'
             aria-label='Add to cart'
             className={actionButtonClass('cart')}
-            onClick={() => setActiveAction('cart')}
+            onClick={() => handleActionClick('cart')}
           >
             <FiShoppingCart />
           </button>
@@ -77,7 +96,7 @@ const Product = ({name,img,price}) => {
             type='button'
             aria-label='Quick view'
             className={actionButtonClass('view')}
-            onClick={() => setActiveAction('view')}
+            onClick={() => handleActionClick('view')}
           >
             <FiEye />
           </button>
@@ -85,7 +104,7 @@ const Product = ({name,img,price}) => {
             type='button'
             aria-label='Add to wishlist'
             className={actionButtonClass('wishlist')}
-            onClick={() => setActiveAction('wishlist')}
+            onClick={() => handleActionClick('wishlist')}
           >
             <FiHeart />
           </button>
