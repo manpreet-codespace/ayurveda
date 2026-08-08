@@ -10,10 +10,12 @@ import Gallery from './Gallery.jsx'
 import Products from './Products.jsx'
 import ProductsDetailsPage from './ProductsDetailsPage.jsx'
 import Signup from './Signup.jsx'
+import Login from './Login.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
     { path: '/user-login', element: <Signup/>},
+    { path: '/login' , element: <Login/>},
     { path: '/', element: <App /> },
     { path: '/join-hands', element: <JoinHands /> },
     { path: '/contact', element: <Contact /> },

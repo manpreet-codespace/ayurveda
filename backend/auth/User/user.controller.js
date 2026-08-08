@@ -57,13 +57,22 @@ export const loginUserController = async(req,res) =>{
     const transaction = await sequelize.transaction();
     try{
 
-        const {identifier,password} = req.body;
+        const { identifier, email, phonenumber, password } = req.body;
+        const loginIdentifier = String(identifier || email || phonenumber || "").trim();
+
+        if (!loginIdentifier || !password) {
+            await transaction.rollback();
+            return res.status(400).json({
+                success: false,
+                message: "Email or phone number and password are required"
+            });
+        }
 
         const user = await User.findOne({
             where:{
                 [Op.or]:[
-                    {email:identifier},
-                    {phonenumber:identifier}
+                    {email:loginIdentifier},
+                    {phonenumber:loginIdentifier}
                 ]
             },
             transaction

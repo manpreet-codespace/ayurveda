@@ -1,6 +1,60 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { API_BASE_URL } from './config/api';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [loginData, setLoginData] = useState({ identifier: '', password: '' });
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setLoginData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const validate = () => {
+    if (!loginData.identifier.trim()) {
+      setError('Enter your email or phone number');
+      return false;
+    }
+    if (!loginData.password) {
+      setError('Enter your password');
+      return false;
+    }
+
+    return true;
+  };
+
+  const savedLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!validate()) {
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        identifier: loginData.identifier.trim(),
+        password: loginData.password,
+      });
+      console.log(response.data);
+      
+      localStorage.setItem('authToken', response.data.token);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Unable to sign in. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-5xl flex-col overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-[0_25px_80px_-20px_rgba(16,185,129,0.28)] lg:flex-row">
@@ -42,12 +96,17 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={savedLogin}>
             <label className="block text-sm font-medium text-slate-700">
-              <span className="mb-2 block">Email address</span>
+              <span className="mb-2 block">Email address or phone number</span>
               <input
-                type="email"
-                placeholder="Enter your email"
+                type="text"
+                name="identifier"
+                value={loginData.identifier}
+                onChange={handleChange}
+                placeholder="Enter your email or phone number"
+                autoComplete="username"
+                required
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-emerald-500 focus:bg-white"
               />
             </label>
@@ -56,24 +115,32 @@ const Login = () => {
               <span className="mb-2 block">Password</span>
               <input
                 type="password"
+                name="password"
+                value={loginData.password}
+                onChange={handleChange}
                 placeholder="Enter your password"
+                autoComplete="current-password"
+                required
                 className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-emerald-500 focus:bg-white"
               />
             </label>
 
+            {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
+
             <button
               type="submit"
+              disabled={isSubmitting}
               className="w-full rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white transition hover:bg-emerald-700"
             >
-              Sign in
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don’t have an account?{' '}
-            <a href="#" className="font-semibold text-emerald-600 hover:text-emerald-700">
+            <Link to="/user-login" className="font-semibold text-emerald-600 hover:text-emerald-700">
               Create one
-            </a>
+            </Link>
           </p>
         </div>
       </div>
