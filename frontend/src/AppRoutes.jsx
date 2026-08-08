@@ -9,9 +9,11 @@ import NotFoundPage from './NotFoundPage.jsx'
 import Gallery from './Gallery.jsx'
 import Products from './Products.jsx'
 import ProductsDetailsPage from './ProductsDetailsPage.jsx'
+import Signup from './Signup.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
+    { path: '/user-login', element: <Signup/>},
     { path: '/', element: <App /> },
     { path: '/join-hands', element: <JoinHands /> },
     { path: '/contact', element: <Contact /> },
