@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { API_BASE_URL } from './config/api';
+import { useNavigate } from 'react-router-dom';
 
 
 const Signup = () => {
@@ -10,6 +11,7 @@ const Signup = () => {
         phonenumber: "",
         password: ""
     };
+const navigate = useNavigate();
 
     const [formData, setFormData] = useState(initialFormData);
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -73,13 +75,15 @@ const Signup = () => {
 
         try {
             e.preventDefault();
-            
+
             const response = await axios.post(`${API_BASE_URL}/auth/user-login`, formData);
 
             console.log(response.data);
             setFormData(initialFormData);
             setConfirmPassword("");
             setErrors({});
+            navigate("/");
+            
         } catch (err) {
             console.log(err.message);
         }
