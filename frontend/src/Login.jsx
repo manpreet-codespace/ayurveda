@@ -46,7 +46,7 @@ const Login = () => {
         password: loginData.password,
       });
       console.log(response.data);
-      
+
       localStorage.setItem('authToken', response.data.token);
       navigate('/');
     } catch (err) {
@@ -54,7 +54,7 @@ const Login = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }; 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-5xl flex-col overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-[0_25px_80px_-20px_rgba(16,185,129,0.28)] lg:flex-row">
