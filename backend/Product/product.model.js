@@ -57,6 +57,4 @@ const Product = sequelize.define("Product" , {
 Product.belongsTo(productCategory,{foreignKey:"c_id"});
 productCategory.hasMany(Product,{foreignKey:"c_id"});
 
-
-
 export default Product;

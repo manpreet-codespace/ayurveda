@@ -13,6 +13,8 @@ const ProductsDetailsPage = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] =useState(1);
   const maxQuantity = 10;
+  const [cart,setCart] = useState({});
+
 
 
   const increase = () => {
@@ -97,7 +99,16 @@ const ProductsDetailsPage = () => {
     }
   }, [p_id])
 
+const addToCart = () =>{
+  try{
 
+  }
+  catch(err)
+  {
+    console.log(err);
+
+  }
+}
 
   return (
     <>
