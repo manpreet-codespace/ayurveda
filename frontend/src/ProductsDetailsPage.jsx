@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Footer from './Components/Layouts/Footer'
 import Navbar from './Components/Layouts/Navbar'
 import { useParams } from 'react-router-dom'
-import { API_BASE_URL } from './config/api'
-import axios from 'axios'
-import placeholderImage from './assets/product1.webp'
+import { API_BASE_URL } from './config/api.js';
+import axios from 'axios';
+import placeholderImage from './assets/product1.webp';
 
 const ProductsDetailsPage = () => {
   const { p_id } = useParams()
@@ -13,8 +13,10 @@ const ProductsDetailsPage = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] =useState(1);
   const maxQuantity = 10;
-  const [cart,setCart] = useState({});
-
+  const [cart,setCart] = useState({
+    p_id:"",
+    quantity:""
+  });
 
 
   const increase = () => {
@@ -28,6 +30,7 @@ const ProductsDetailsPage = () => {
       setQuantity((prev) => prev - 1)
     }
   }
+
   const getImageList = (imageValue) => {
     if (!imageValue) return [placeholderImage]
 
@@ -99,8 +102,23 @@ const ProductsDetailsPage = () => {
     }
   }, [p_id])
 
-const addToCart = () =>{
+  const token = localStorage.getItem("authToken");
+
+const handleAddToCart = async() =>{
   try{
+      const response = await axios.post(`${API_BASE_URL}/cart`,
+        {
+          p_id:productDetail.p_id,
+          quantity
+        },
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
+      )
+
+      console.log(response.data);
 
   }
   catch(err)
@@ -171,7 +189,7 @@ const addToCart = () =>{
               </button>
             </div>
             <div>        
-              <button>Add to Cart</button>
+              <button onClick={handleAddToCart}>Add to Cart</button>
               <button>Buy Now</button>
             </div>
             
