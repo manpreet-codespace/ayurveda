@@ -43,6 +43,6 @@ const Products = () => {
       <Footer/>
     </>
   )
-}
+} 
 
 export default Products

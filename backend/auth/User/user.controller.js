@@ -107,7 +107,7 @@ export const loginUserController = async(req,res) =>{
             },
             process.env.JWT_SECRET,
             {
-                expiresIn: "30min"
+                expiresIn: "1hr"
             }
         )
         await transaction.commit();

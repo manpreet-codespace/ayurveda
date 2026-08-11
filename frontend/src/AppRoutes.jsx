@@ -11,6 +11,7 @@ import Products from './Products.jsx'
 import ProductsDetailsPage from './ProductsDetailsPage.jsx'
 import Signup from './Signup.jsx'
 import Login from './Login.jsx'
+import Cart from './Cart.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
@@ -27,6 +28,8 @@ const AppRoutes = () => {
     { path: '/products', element: <Products/>},
     { path: '/product-details', element: <ProductsDetailsPage/>},
     { path: '/product-details/:p_id', element: <ProductsDetailsPage/>},
+    { path: '/get-cart', element:<Cart/>},
+    
 
     adminRoutes,
   ])

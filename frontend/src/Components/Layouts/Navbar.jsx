@@ -24,7 +24,7 @@ const Navbar = () => {
             <div className='right flex w-50 justify-between'>
                     <Link to='/'><LuSearch size={24}/></Link>
                     <Link to='/'><LuHeart size={24}/></Link>
-                    <Link to='/'><LuShoppingBag size={24}/></Link>
+                    <Link to='/get-cart'><LuShoppingBag size={24}/></Link>
                     <Link to='/'><LuAlignJustify size={24}/></Link>
             </div>
         </div>

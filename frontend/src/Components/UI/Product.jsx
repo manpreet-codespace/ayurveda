@@ -3,6 +3,7 @@ import { FiEye, FiHeart, FiShoppingCart } from 'react-icons/fi'
 import { API_BASE_URL } from '../../config/api'
 import wireframeProductImage from '../../assets/image.png'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -18,12 +19,28 @@ const Product = ({p_id,name,img,price}) => {
     }
     else if ( action === 'cart')
     {
-      navigate("/");
+     
 
     }
     else if( action === 'wishlist')
     {
       navigate("/");
+
+    }
+  }
+
+  const handleAddToCart = async() =>{
+    try{
+      const response = await axios.post(`${API_BASE_URL}/cart`,
+        {
+          
+        }
+      )
+
+    }
+    catch(err)
+    {
+      console.log(err.message);
 
     }
   }
