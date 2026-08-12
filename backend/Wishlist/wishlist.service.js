@@ -104,6 +104,29 @@ export const removeWishlistItem = async(userId,wi_id,options ={}) =>{
 }
 
 
+export const wishlistCount = async(userId) =>{
+
+    const wishlist =await  Wishlist.findOne({
+        where:{
+            u_id: userId
+        }
+    })
+
+    if(!wishlist)
+    {
+        throw new Error("Wishlist doesn't exist");
+
+    }
+
+     const count = await WishlistItem.count({
+        where:{
+            w_id:wishlist.w_id
+        }
+    })
+
+    return count;
+
+}
 
 
 

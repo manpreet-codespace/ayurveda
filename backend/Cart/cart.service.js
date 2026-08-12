@@ -134,6 +134,36 @@ export const removeCartItemService = async(userId,ci_id,options ={}) => {
     
 }
 
+
+export const cartCount = async(userId) =>{
+
+    const cart =await  Cart.findOne({
+        where:{
+            u_id: userId
+        }
+    })
+
+    if(!cart)
+    {
+        throw new Error("cart doesn't exist");
+
+    }
+
+    const cartItems = await CartItem.findAll({
+        where: {
+            cart_id : cart.cart_id
+        }
+    })
+     const count = await cartItems.reduce((total,item)=>total + item.quantity,0);
+
+
+    return count;
+    
+
+}
+
+
+
 // COMMON FUNCTIONS TO ADD TO CART
 
 // ✅ createCartIfNotExists()-- if user_id exists then cart exists 

@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { API_BASE_URL } from './config/api.js';
 import axios from 'axios';
 import placeholderImage from './assets/product1.webp';
+import { Heart } from 'lucide-react';
 
 const ProductsDetailsPage = () => {
   const { p_id } = useParams()
@@ -17,6 +18,9 @@ const ProductsDetailsPage = () => {
     p_id:"",
     quantity:""
   });
+  const [wishlistMessage, setWishlistMessage] = useState('');
+  const [isWishlisting, setIsWishlisting] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
 
   const increase = () => {
@@ -128,6 +132,25 @@ const handleAddToCart = async() =>{
   }
 }
 
+const handleAddToWishlist = async () => {
+  if (!productDetail?.p_id) return;
+
+  try {
+    setIsWishlisting(true);
+    setWishlistMessage('');
+    const response = await axios.post(
+      `${API_BASE_URL}/wishlist`,
+      { p_id: productDetail.p_id },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    setIsWishlisted(true);
+    setWishlistMessage(response.data.message || 'Added to wishlist');
+  } catch (err) {
+    setWishlistMessage(err.response?.data?.message || 'Unable to update wishlist');
+  } finally {
+    setIsWishlisting(false);
+  }
+};
   return (
     <>
       <Navbar />
@@ -162,7 +185,12 @@ const handleAddToCart = async() =>{
             </div>
 
             <div className='flex flex-col justify-center'>
-              <p className='text-xs font-bold uppercase tracking-[0.18em] text-emerald-700'>Ayurvedic wellness</p>
+              <div className='flex items-start justify-between gap-4'>
+                <p className='text-xs font-bold uppercase tracking-[0.18em] text-emerald-700'>Ayurvedic wellness</p>
+                <button type='button' onClick={handleAddToWishlist} disabled={isWishlisting || isWishlisted} aria-label={isWishlisted ? 'Added to wishlist' : 'Add to wishlist'} title={isWishlisted ? 'Added to wishlist' : 'Add to wishlist'} className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition disabled:cursor-not-allowed disabled:opacity-80 ${isWishlisted ? 'border border-rose-500 bg-rose-500 text-white' : 'border border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'}`}>
+                  <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
+                </button>
+              </div>
               <h1 className='mt-3 text-3xl font-semibold leading-tight text-stone-900 sm:text-4xl'>{productDetail?.p_name || 'Product name'}</h1>
               <div className='mt-5 flex flex-wrap items-center gap-3'>
                 {discountPercent > 0 ? (
@@ -194,6 +222,7 @@ const handleAddToCart = async() =>{
                 <button onClick={handleAddToCart} className='rounded-xl border-2 border-emerald-700 px-5 py-3 font-semibold text-emerald-800 transition hover:bg-emerald-50'>Add to cart</button>
                 <button className='rounded-xl bg-emerald-800 px-5 py-3 font-semibold text-white shadow-lg shadow-emerald-900/15 transition hover:bg-emerald-900'>Buy now</button>
               </div>
+              {wishlistMessage && <p className='mt-3 text-sm font-medium text-emerald-700'>{wishlistMessage}</p>}
 
               <div className='mt-8'>
                 <div className='flex gap-6 border-b border-stone-200'>

@@ -1,6 +1,6 @@
 import sequelize from "../db/pg_db.js";
 import Cart from "./cart.model.js";
-import { addToCart, createCartIfNotExists, getCartService, removeCartItemService, updateCartItemQuantityService } from "./cart.service.js";
+import { addToCart, cartCount, createCartIfNotExists, getCartService, removeCartItemService, updateCartItemQuantityService } from "./cart.service.js";
 
 export const addToCartController = async (req, res) => {
 
@@ -125,5 +125,34 @@ export const removeCartItemController = async (req, res) => {
             message: err.message
         })
 
+    }
+}
+
+export const getCartCountController = async(req,res)=>{
+    try{
+        const userId = req.user.id;
+
+        const count = await cartCount(userId);
+
+        if(!count)
+        {
+            return res.status(404).json({
+                success:false,
+                message:"Product not found in cart",
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            count
+        })
+
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+            success:false,
+            message:err.message
+       })
     }
 }

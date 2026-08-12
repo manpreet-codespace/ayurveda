@@ -1,5 +1,5 @@
 import sequelize from "../db/pg_db.js"
-import { addToWishlist, getWishlist, removeWishlistItem } from "./wishlist.service.js";
+import { addToWishlist, getWishlist, removeWishlistItem, wishlistCount } from "./wishlist.service.js";
 
 
 
@@ -121,7 +121,7 @@ export const removeWishlistItemController = async(req,res) =>{
 
         return res.status(200).json({
             success:true,
-            wishlist
+            message:"Removed successfully"
         })
 
     }
@@ -135,3 +135,33 @@ export const removeWishlistItemController = async(req,res) =>{
         })
     }
 }
+
+export const getWishlistCountController = async(req,res)=>{
+    try{
+        const userId = req.user.id;
+
+        const count = await wishlistCount(userId);
+
+        if(!count)
+        {
+            return res.status(404).json({
+                success:false,
+                message:"Product not found in wishlist"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            count
+        })
+
+    }
+    catch(err)
+    {
+        return res.status(500).json({
+            success:false,
+            message:err.message
+       })
+    }
+}
+

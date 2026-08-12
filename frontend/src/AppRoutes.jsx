@@ -12,6 +12,7 @@ import ProductsDetailsPage from './ProductsDetailsPage.jsx'
 import Signup from './Signup.jsx'
 import Login from './Login.jsx'
 import Cart from './Cart.jsx'
+import Wishlist from './Wishlist.jsx'
 
 const AppRoutes = () => {
   return useRoutes([
@@ -29,6 +30,7 @@ const AppRoutes = () => {
     { path: '/product-details', element: <ProductsDetailsPage/>},
     { path: '/product-details/:p_id', element: <ProductsDetailsPage/>},
     { path: '/get-cart', element:<Cart/>},
+    { path: '/get-wishlist' , element:<Wishlist/>},
     
 
     adminRoutes,
