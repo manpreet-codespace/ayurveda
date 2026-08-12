@@ -21,6 +21,9 @@ import "./associations.js";
 import cartRouter from "./Cart/cart.routes.js";
 import Cart from "./Cart/cart.model.js";
 import CartItem from "./Cart/cartItem.model.js";
+import wishlistRouter from "./Wishlist/wishlist.routes.js";
+import Wishlist from "./Wishlist/wishlist.model.js";
+import WishlistItem from "./Wishlist/wishlistItem.model.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: resolve(__dirname, ".env") });
@@ -56,7 +59,7 @@ app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api",diseaseRouter,galleryRouter,inquiryRouter,productRouter,cartRouter);
+app.use("/api",diseaseRouter,galleryRouter,inquiryRouter,productRouter,cartRouter,wishlistRouter);
 app.use("/api/auth" , userRouter);
 app.use("/api/uploads", express.static(uploadsDir));
 
@@ -73,6 +76,8 @@ app.listen(port, async () => {
     await Product.sync();
     await Cart.sync();
     await CartItem.sync();
+    await Wishlist.sync();
+    await WishlistItem.sync();
     
 
   } catch (err) {

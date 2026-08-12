@@ -117,7 +117,7 @@ export const removeCartItemController = async (req, res) => {
         })
 
     }
-    catch {
+    catch(err) {
         await transaction.rollback();
 
         return res.status(500).json({
