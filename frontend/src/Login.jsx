@@ -47,7 +47,7 @@ const Login = () => {
       });
       console.log(response.data);
 
-      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('accessToken', response.data.accessToken);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to sign in. Please try again.');

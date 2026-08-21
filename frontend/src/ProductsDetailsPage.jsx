@@ -4,6 +4,7 @@ import { API_BASE_URL } from './config/api.js';
 import axios from 'axios';
 import placeholderImage from './assets/product1.webp';
 import { Heart } from 'lucide-react';
+import api from './services/Axios.js';
 
 const ProductsDetailsPage = () => {
   const { p_id } = useParams()
@@ -92,7 +93,7 @@ const ProductsDetailsPage = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/product-category-data/${p_id}`)
+        const response = await api.get(`/product-category-data/${p_id}`)
         setProductDetail(response?.data?.product || null)
       } catch (err) {
         console.log(err.message)
@@ -104,19 +105,13 @@ const ProductsDetailsPage = () => {
     }
   }, [p_id])
 
-  const token = localStorage.getItem("authToken");
 
 const handleAddToCart = async() =>{
   try{
-      const response = await axios.post(`${API_BASE_URL}/cart`,
+      const response = await api.post(`/cart`,
         {
           p_id:productDetail.p_id,
           quantity
-        },
-        {
-          headers:{
-            Authorization:`Bearer ${token}`
-          }
         }
       )
 
@@ -136,11 +131,9 @@ const handleAddToWishlist = async () => {
   try {
     setIsWishlisting(true);
     setWishlistMessage('');
-    const response = await axios.post(
-      `${API_BASE_URL}/wishlist`,
-      { p_id: productDetail.p_id },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    const response = await api.post(
+      `/wishlist`,
+      { p_id: productDetail.p_id } );
     setIsWishlisted(true);
     setWishlistMessage(response.data.message || 'Added to wishlist');
   } catch (err) {

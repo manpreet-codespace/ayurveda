@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { API_BASE_URL } from './config/api'
 import { Heart, ShoppingBag } from 'lucide-react'
+import api from './services/Axios'
 
 const productImageUrl = (image) => {
   if (!image) return null
@@ -25,9 +26,7 @@ const Wishlist = () => {
   useEffect(() => {
     const fetchWishlistDetails = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/get-wishlist`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const response = await api.get(`/get-wishlist`)
         setWishlistDetails(response.data?.wishlist?.WishlistItems || [])
       } catch (err) {
         console.log(err.message)
@@ -35,20 +34,12 @@ const Wishlist = () => {
     }
 
     fetchWishlistDetails()
-  }, [token])
+  }, [])
 
 
   const handleRemoveWishlist =async(wishlistItemId)=>{
     try{
-        const response = await axios.delete(`${API_BASE_URL}/delete-wishlist/${wishlistItemId}`,
-            {
-                headers:{
-                    Authorization:
-                        `Bearer ${token}`
-                    
-                }
-            }
-        )
+        const response = await api.delete(`${API_BASE_URL}/delete-wishlist/${wishlistItemId}`)
 
         setWishlistDetails((items)=>
             items.filter((item)=>item.wi_id!== wishlistItemId)

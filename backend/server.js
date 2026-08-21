@@ -24,6 +24,7 @@ import CartItem from "./Cart/cartItem.model.js";
 import wishlistRouter from "./Wishlist/wishlist.routes.js";
 import Wishlist from "./Wishlist/wishlist.model.js";
 import WishlistItem from "./Wishlist/wishlistItem.model.js";
+import cookieParser from "cookie-parser";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: resolve(__dirname, ".env") });
@@ -39,6 +40,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");

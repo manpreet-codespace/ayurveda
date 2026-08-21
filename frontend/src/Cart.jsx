@@ -3,6 +3,7 @@ import { API_BASE_URL } from './config/api';
 import axios from 'axios';
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import api from './services/Axios';
 
 const getProductImage = (image) => {
     if (!image) return null;
@@ -24,7 +25,6 @@ const Cart = () => {
     const [cartDetail,setCartDetail] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const token = localStorage.getItem("authToken");
 
     const navigate = useNavigate();
 
@@ -32,11 +32,7 @@ const Cart = () => {
     useEffect(()=>{
         const fetchCartDetails =async()=>{
             try{
-                const response = await axios.get(`${API_BASE_URL}/get-cart`,{
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                    }
-                });
+                const response = await api.get(`/get-cart`);
 
                 setCartDetail(response.data.cart?.CartItems ?? []);
 
@@ -51,20 +47,15 @@ const Cart = () => {
 
         fetchCartDetails();
 
-    },[token])
+    },[])
 
     const updateQuantity = async(cartItemId, nextQuantity) => {
         try{
             if (nextQuantity < 1) return;
 
-            const response = await axios.patch(`${API_BASE_URL}/update-cart/${cartItemId}`,
+            const response = await api.patch(`/update-cart/${cartItemId}`,
                 {
                     quantity:nextQuantity
-                },
-                {
-                    headers:{
-                        Authorization: `Bearer ${token}`
-                    }
                 }
             );
 
@@ -84,11 +75,7 @@ const Cart = () => {
     const removeItem = async(cartItemId) => {
 
         try{
-            const response = await axios.delete(`${API_BASE_URL}/delete-cart/${cartItemId}`,{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            })
+            const response = await api.delete(`/delete-cart/${cartItemId}`)
 
             setCartDetail((items) => items.filter((item) => item.ci_id !== cartItemId));
         }

@@ -5,24 +5,17 @@ import logo from '../../assets/ayurveda_logo.avif';
 import {LuAlignJustify, LuHeart, LuSearch, LuShoppingBag} from "react-icons/lu";
 import axios from 'axios';
 import { API_BASE_URL } from '../../config/api';
+import api from '../../services/Axios';
 
 
 const Navbar = () => {
-
-    const token = localStorage.getItem("authToken");
     const [wishlistCount,setWishlistCount] =useState("");
     const [cartCount,setCartCount] =useState("");
 
     const fetchWishlistCount=async()=>
     {
         try{
-            const response = await axios.get(`${API_BASE_URL}/wishlist-count`,
-                {
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                    }
-                }
-            )
+            const response = await api.get(`/wishlist-count`)
 
             setWishlistCount(response.data?.count);
 
@@ -36,13 +29,7 @@ const Navbar = () => {
        const fetchCartCount=async()=>
     {
         try{
-            const response = await axios.get(`${API_BASE_URL}/cart-count`,
-                {
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                    }
-                }
-            )
+            const response = await api.get(`/cart-count`)
 
             setCartCount(response.data?.count);
 

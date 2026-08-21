@@ -101,22 +101,39 @@ export const loginUserController = async(req,res) =>{
             })
         }
 
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             {
                 id:user.u_id
             },
-            process.env.JWT_SECRET,
+            process.env.ACCESS_TOKEN_SECRET,
             {
-                expiresIn: "1hr"
+                expiresIn: "15m"
             }
         )
+
+        const refreshToken = jwt.sign(
+            {
+                id:user.u_id
+            },
+            process.env.REFRESH_TOKEN_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        )
+
         await transaction.commit();
+
+        res.cookie("refreshToken", refreshToken,{
+            httpOnly:true,
+            secure:process.env.NODE_ENV === "production",
+            sameSite:"strict"
+        })
 
 
         return res.status(200).json({
             success:true,
             user,
-            token
+            accessToken
         })
 
     }
@@ -130,3 +147,44 @@ export const loginUserController = async(req,res) =>{
         })
     }
 }
+
+export const refreshAccessTokenController = async (req, res) => {
+    try {
+
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) {
+            return res.status(401).json({
+                success: false,
+                message: "Refresh token not found"
+            });
+        }
+
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        );
+
+        const accessToken = jwt.sign(
+            {
+                id: decoded.id
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            {
+                expiresIn: "15m"
+            }
+        );
+
+        return res.status(200).json({
+            success: true,
+            accessToken
+        });
+
+    } catch (err) {
+
+        return res.status(401).json({
+            success: false,
+            message: "Invalid or expired refresh token"
+        });
+    }
+};
