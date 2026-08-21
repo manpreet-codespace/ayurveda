@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import Navbar from './Components/Layouts/Navbar';
 
 import { API_BASE_URL } from './config/api';
-import Footer from './Components/Layouts/Footer';
 import { Link, useParams } from 'react-router-dom';
 import ContactForm from './Components/UI/ContactForm';
 
@@ -122,10 +120,8 @@ const Disease = () => {
 
   return (
     <>
-    <Navbar/>
     {slug ? renderDiseaseDetails() : renderDiseaseList()}
     
-    <Footer/>
     </>
   )
 }

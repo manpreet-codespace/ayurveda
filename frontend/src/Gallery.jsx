@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Footer from './Components/Layouts/Footer';
-import Navbar from './Components/Layouts/Navbar';
 import axios from 'axios';
 import { API_BASE_URL } from './config/api';
 
@@ -30,7 +28,6 @@ const Gallery = () => {
   },[])
   return (
     <>
-    <Navbar/>
     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-11/12 mx-auto my-10'>
       {
         seeImages.map((data)=>(
@@ -40,7 +37,6 @@ const Gallery = () => {
         ))
       }
     </div>
-    <Footer/>
     </>
   )
 }

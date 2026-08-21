@@ -1,6 +1,4 @@
 import React, { useState } from "react"
-import Navbar from "./Components/Layouts/Navbar"
-import Footer from "./Components/Layouts/Footer"
 import OPD_timings from "./Components/UI/OPD_timings"
 import { problems_config } from "./config/problems_config"
 import Problems from "./Components/UI/Problems"
@@ -42,12 +40,12 @@ import inc from './assets/inc_91.avif';
 import timesOfIndia from './assets/times_of_india.avif';
 
 const newsChannel= [
-  {img:hindustanTimes},
-  {img:timesOfIndia},
-  {img:abp},
-  {img:inc},
-  {img:healthSite},
-  {img:hindustanStyles},
+  {img:hindustanTimes, name:'Hindustan Times'},
+  {img:timesOfIndia, name: 'Times of India'},
+  {img:abp, name: 'ABP news'},
+  {img:inc, name:"INC"},
+  {img:healthSite, name: "HealthSite"},
+  {img:hindustanStyles, name : 'Hindustan Styles'},
 
 ]
 
@@ -156,7 +154,6 @@ function App() {
 
   return (
     <>
-      <Navbar />
 
       <section className="h-40 flex justify-center items-center">
         <div className=" flex gap-6 rounded-lg justify-center">
@@ -397,7 +394,7 @@ function App() {
                   <div className="perspective-[1000px]">
                     <Icon className="h-12 w-12 text-[#2f2f2f] transition-transform duration-500 ease-out group-hover:transform-[rotateY(180deg)]" strokeWidth={1.5} />
                   </div>
-                  <h3 className="mt-7 text-[20px] font-medium text-[#1f1f1f]">{item.title}</h3>
+                  <h1 className="mt-7 text-[20px] font-medium text-[#1f1f1f]">{item.title}</h1>
                   <p className="mt-3 max-w-55 text-[15px] leading-7 text-[#404040]">
                     {item.description}
                   </p>
@@ -420,7 +417,7 @@ function App() {
                 {
                   newsChannel.map((channel,index)=>(
                     <div key={index} className="w-30 h-30 ">
-                      <img src={channel.img}/>
+                      <img src={channel.img} alt ={channel.name}/>
                     </div>
                   ))
                 }
@@ -440,9 +437,7 @@ function App() {
                 </div>
           
             </motion.section>
-        
-      <Footer />
-    </>
+            </>
   )
 }
 

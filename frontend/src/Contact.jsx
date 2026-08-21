@@ -1,7 +1,5 @@
 import React from 'react'
 import Breadcrumbs from './Components/UI/Breadcrumbs'
-import Navbar from './Components/Layouts/Navbar'
-import Footer from './Components/Layouts/Footer'
 import { Map, Mail, PhoneCall } from 'lucide-react'
 import MapComponents from './Components/UI/MapComponents'
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa6";
@@ -50,7 +48,6 @@ const Contact = () => {
   }
   return (
     <>
-    <Navbar/>
       <Breadcrumbs/>
 
         <section className='flex w-11/12 justify-between mx-auto my-10'>
@@ -107,7 +104,6 @@ const Contact = () => {
             </form>
             </div>
         </section>
-      <Footer/>
     </>
   )
 }

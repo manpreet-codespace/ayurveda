@@ -42,7 +42,7 @@ const Footer = () => {
         <div className='grid gap-14 md:grid-cols-2 lg:grid-cols-4'>
           {footerColumns.map((column) => (
             <div key={column.title}>
-              <h3 className='text-[20px] font-medium tracking-[0.02em]'>{column.title}</h3>
+              <h1 className='text-[20px] font-medium tracking-[0.02em]'>{column.title}</h1>
               <div className='mt-10 space-y-5 text-[15px] leading-8'>
                 {column.items.map((item) => (
                   <p key={item} className='max-w-[310px]'>

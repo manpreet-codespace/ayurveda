@@ -1,9 +1,11 @@
-import Product from '../../admin/Pages/Product'
 import AdminLayout from "../Layout/AdminLayout";
-import Dashboard from "../Pages/Dashboard";
-import Disease from '../Pages/Disease';
-import Gallery from '../Pages/Gallery';
-import Treatment from '../Pages/Treatment';
+import { lazy } from "react";
+const Product = lazy(()=>import('../Pages/Product'));
+const Dashboard = lazy(()=>import('../Pages/Dashboard'));
+const Disease = lazy(()=>import('../Pages/Disease'));
+const Gallery = lazy(()=>import('../Pages/Gallery'));
+const Treatment = lazy(()=>import('../Pages/Treatment'));
+ 
 
 const AdminRoutes={
     path:"/admin",
@@ -16,6 +18,8 @@ const AdminRoutes={
         {path:"gallery", element: <Gallery/>}
     ]
 }
+
+
 
 export default AdminRoutes;
 

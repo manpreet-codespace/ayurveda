@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Components/Layouts/Navbar';
-import Footer from './Components/Layouts/Footer';
 import axios from 'axios';
 import { API_BASE_URL } from './config/api';
 import Product from './Components/UI/Product.jsx';
@@ -30,7 +28,6 @@ const Products = () => {
   },[])
   return (
     <>
-      <Navbar/>
 
       <div className='my-10 flex '>
         {products.map((product)=>(
@@ -40,7 +37,6 @@ const Products = () => {
         ))}
       </div>
       
-      <Footer/>
     </>
   )
 } 

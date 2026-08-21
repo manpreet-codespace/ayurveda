@@ -65,21 +65,21 @@ const Navbar = () => {
     },[])
   return (
     <>
-    <nav className='w-full'>
+    <nav className='w-full' aria-label='main navigation'>
         <div className='w-full text-center' >
             <a href='tel:+91770797059' className='bg-[var(--brown)] text-white text-[24px] py-2 font-semibold w-full block '>CALL NOW +91 77079 77059</a>
         </div>
         <div className='flex justify-between px-10 py-4 items-center'>
             <div className='left flex w-30 justify-between '>
-                <Link to='/'><FaFacebookF size={24}/></Link>
-                <Link to='/'><FaInstagram size={24}/></Link>
-                <Link to='/'><FaTwitter size={24}/></Link>
+                <Link to='/facebook' aria-label='Facebook'><FaFacebookF size={24}/></Link>
+                <Link to='/instagram' aria-label= "Instagram"><FaInstagram size={24}/></Link>
+                <Link to='/twitter' aria-label='Twitter'><FaTwitter size={24}/></Link>
             </div>
             <div className='center'>
                 <img src={logo}  alt="Ayurvedic logo"  className='h-18'/>
            </div>
             <div className='right flex w-50 justify-between'>
-                    <Link to='/'><LuSearch size={24}/></Link>
+                    <Link to='/' aria-label= " Search"><LuSearch size={24}/></Link>
                     <Link to='/get-wishlist' className='relative inline-flex' aria-label={`Wishlist${wishlistCount ? `, ${wishlistCount} items` : ''}`}>
                         <LuHeart size={24}/>
                         {wishlistCount > 0 && <span className='absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-rose-500 px-1 text-[10px] font-bold leading-none text-white shadow-sm'>
@@ -91,7 +91,7 @@ const Navbar = () => {
                         {cartCount > 0 && <span className='absolute -right-3 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-rose-500 px-1 text-[10px] font-bold leading-none text-white shadow-sm'>
                             {cartCount > 99 ? '99+' : cartCount}
                         </span>}</Link>
-                    <Link to='/'><LuAlignJustify size={24}/></Link>
+                    <Link to='/' aria-label='More menu'><LuAlignJustify size={24}/></Link>
             </div>
         </div>
 

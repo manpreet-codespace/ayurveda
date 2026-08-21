@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Components/Layouts/Navbar";
-import Footer from "./Components/Layouts/Footer";
 import Breadcrumbs from "./Components/UI/Breadcrumbs";
 import { Link } from "react-router";
 import axios from "axios";
@@ -42,7 +40,6 @@ const Ayurveda = () => {
   }, []);
   return (
     <>
-      <Navbar />
       <section>
         <Breadcrumbs />
       </section>
@@ -130,7 +127,6 @@ const Ayurveda = () => {
         </div>
       </section>
 
-      <Footer />
     </>
   );
 };

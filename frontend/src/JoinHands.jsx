@@ -1,12 +1,8 @@
 import React from 'react'
-import Navbar from './Components/Layouts/Navbar'
-import Footer from './Components/Layouts/Footer'
 
 const JoinHands = () => {
     return (
         <>
-            <Navbar />
-
             <section className='bg-(--pink) text-[18px] py-10'>
                 <div className='w-11/12 mx-auto '>
 
@@ -61,7 +57,7 @@ const JoinHands = () => {
                 </div>
             </section>
 
-            <Footer />
+        
         </>
     )
 }

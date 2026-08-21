@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Components/Layouts/Navbar'
-import Footer from './Components/Layouts/Footer'
 import { API_BASE_URL } from './config/api';
 import axios from 'axios';
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
@@ -109,7 +107,6 @@ const Cart = () => {
     const shipping = subtotal > 0 ? 0 : 0; 
   return (
     <>
-        <Navbar/>
         <main className='min-h-[70vh] bg-stone-50 py-10 sm:py-14'>
             <div className='mx-auto w-11/12 max-w-6xl'>
                 <div className='mb-8 flex items-end justify-between gap-4'>
@@ -184,7 +181,7 @@ const Cart = () => {
                 )}
             </div>
         </main>
-        <Footer/>
+    
     </>
   )
 }

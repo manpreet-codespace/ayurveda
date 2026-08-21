@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Footer from './Components/Layouts/Footer'
-import Navbar from './Components/Layouts/Navbar'
 import { useParams } from 'react-router-dom'
 import { API_BASE_URL } from './config/api.js';
 import axios from 'axios';
@@ -153,7 +151,6 @@ const handleAddToWishlist = async () => {
 };
   return (
     <>
-      <Navbar />
       <main className='bg-stone-50 py-10 sm:py-14'>
         <div className='mx-auto w-11/12 max-w-6xl'>
           <p className='mb-5 text-sm font-medium text-stone-500'>Home / Products / <span className='text-emerald-700'>{productDetail?.p_name || 'Product details'}</span></p>
@@ -242,7 +239,6 @@ const handleAddToWishlist = async () => {
       </main>
 
 
-      <Footer />
     </>
   )
 }
